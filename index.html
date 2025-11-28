@@ -15,7 +15,7 @@
         }
         body {
             font-family: 'Lato', sans-serif;
-            background-color: var(--dark-bg);
+            background-color: #020617;
             color: #e2e8f0;
             overflow-x: hidden;
         }
@@ -26,34 +26,26 @@
         .border-gold { border-color: var(--gold); }
         
         .glass-panel {
-            background: var(--card-glass);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
-        }
-        
-        .card-hover {
-            transition: all 0.3s ease-out;
-        }
-        .card-hover:hover {
-            transform: translateY(-5px);
-            border-color: var(--gold);
-            box-shadow: 0 15px 40px -10px rgba(0, 0, 0, 0.6);
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         .search-input {
             transition: all 0.3s ease;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(4px);
         }
         .search-input:focus {
-            background: rgba(15, 23, 42, 0.95);
+            background: rgba(15, 23, 42, 0.9);
             border-color: var(--gold);
-            box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.2);
+            box-shadow: 0 0 0 1px var(--gold);
         }
 
         .fade-in {
             animation: fadeIn 0.8s ease-out forwards;
-            opacity: 0;
         }
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
@@ -78,258 +70,218 @@
             z-index: 0; 
             will-change: opacity, background-image; 
         }
+
+        /* Simplified card hover effect since images are removed */
+        .simple-card {
+            transition: all 0.3s ease;
+        }
+        .simple-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(212, 175, 55, 0.3);
+        }
     </style>
 </head>
-<body class="min-h-screen flex flex-col bg-slate-900 relative">
+<body class="min-h-screen flex flex-col relative selection:bg-gold selection:text-black">
 
-    <!-- Global Background Image Layer -->
     <div id="cityBackground" class="fixed inset-0 bg-cover bg-center bg-no-repeat opacity-0 pointer-events-none">
-        <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900/60 to-slate-900/40"></div>
+        <div class="absolute inset-0 bg-slate-950/90"></div>
     </div>
 
-    <!-- Navigation -->
-    <nav class="w-full py-6 px-4 md:px-12 flex justify-between items-center glass-panel sticky top-0 z-50 border-b border-white/10 transition-all duration-300">
+    <nav class="w-full py-8 px-4 md:px-12 flex justify-between items-center absolute top-0 z-50">
         <div class="cursor-pointer group" onclick="resetApp()">
-            <div class="text-2xl font-bold serif tracking-widest text-gold group-hover:text-white transition-colors select-none">
-                Travel Buddy <span class="hidden sm:inline text-[10px] text-gray-400 font-sans tracking-widest ml-1 border-l border-gray-600 pl-2 uppercase">Luxury Edition</span>
+            <div class="text-xl md:text-2xl font-bold serif tracking-widest text-gold opacity-90 hover:opacity-100 transition-opacity select-none drop-shadow-lg">
+                Travel Buddy <span class="text-[10px] text-gray-300 font-sans tracking-widest ml-2 uppercase border-l border-gray-400 pl-2">Luxury Edition</span>
             </div>
         </div>
     </nav>
 
-    <!-- Main Content -->
     <main class="flex-grow w-full relative z-10 flex flex-col items-center">
 
-        <!-- Hero Header -->
-        <header id="heroHeader" class="relative w-full h-[60vh] min-h-[550px] flex flex-col justify-center items-center text-center px-4 mb-8 fade-in">
-            <!-- Hero Image: Kashi Vishwanath / Varanasi Temple Architecture -->
-            <div class="absolute inset-0 z-0 opacity-40 bg-[url('https://images.unsplash.com/photo-1587595431973-160d0d94add1?q=80&w=1920')] bg-cover bg-center"></div>
-            <div class="absolute inset-0 bg-gradient-to-b from-slate-900/30 via-slate-900/60 to-slate-900 z-10"></div>
+        <header id="heroHeader" class="relative w-full h-[600px] flex flex-col justify-center items-center text-center px-4 mb-16 fade-in">
             
-            <div class="relative z-20 max-w-4xl mx-auto mt-10">
+            <div class="absolute inset-0 z-0">
+                <!-- Stable Background Image -->
+                <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1548013146-72479768bada?auto=format&fit=crop&w=1920&q=80')] bg-cover bg-center opacity-50"></div>
+                <div class="absolute inset-0 bg-gradient-to-b from-[#020617]/70 via-[#020617]/50 to-[#020617]"></div>
+            </div>
+            
+            <div class="relative z-10 max-w-5xl mx-auto mt-10">
                 <h1 class="text-5xl md:text-8xl mb-6 text-white leading-tight font-serif drop-shadow-2xl">
                     Where will your story <br/>
                     <span class="text-gold italic">begin?</span>
                 </h1>
-                <p class="text-lg md:text-xl text-gray-200 font-light tracking-wide mb-10 drop-shadow-md max-w-2xl mx-auto">
-                    Explore 280+ curated destinations across India. 
-                    <span class="hidden md:inline block mt-2 text-gray-400">Powered by Live Intelligence.</span>
+                <p class="text-sm md:text-base text-gray-200 tracking-widest mb-12 uppercase max-w-xl mx-auto drop-shadow-md">
+                    Explore 280+ curated destinations across India. <br class="hidden md:inline"> Powered by Live Intelligence.
                 </p>
 
-                <!-- Search Bar -->
                 <form onsubmit="handleSearch(event)" class="relative w-full max-w-xl mx-auto group z-50">
-                    <div class="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
-                        <i data-lucide="search" class="text-gray-400 w-5 h-5 group-focus-within:text-gold transition-colors"></i>
-                    </div>
                     <input 
                         type="text" 
                         id="cityInput" 
-                        placeholder="Search city (e.g. Agra) or state..." 
-                        class="search-input w-full py-5 pl-14 pr-14 rounded-full text-white placeholder-gray-400 text-lg focus:outline-none backdrop-blur-md bg-slate-800/80 border border-slate-500/50 shadow-2xl"
+                        placeholder="Search city (e.g. Varanasi) or state..." 
+                        class="search-input w-full py-4 pl-6 pr-14 rounded-full text-white placeholder-gray-300 text-sm md:text-base focus:outline-none shadow-2xl"
                         autocomplete="off"
                     >
                     <div id="loadingIndicator" class="absolute right-4 top-1/2 -translate-y-1/2 hidden">
                         <div class="loader"></div>
                     </div>
-                    <button type="button" id="clearBtn" onclick="resetApp()" class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white hidden transition-colors cursor-pointer">
-                        <i data-lucide="x" class="w-6 h-6"></i>
+                    <button type="button" id="clearBtn" onclick="resetApp()" class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-300 hover:text-white hidden transition-colors cursor-pointer">
+                        <i data-lucide="x" class="w-5 h-5"></i>
                     </button>
-                    <!-- Suggestions -->
-                    <div id="searchSuggestions" class="absolute w-full mt-2 bg-slate-900/95 rounded-xl shadow-2xl border border-slate-700 hidden overflow-hidden max-h-64 overflow-y-auto text-left z-50"></div>
+                    <div id="searchSuggestions" class="absolute w-full mt-2 bg-[#0f172a] rounded-xl shadow-2xl border border-slate-700 hidden overflow-hidden max-h-64 overflow-y-auto text-left z-50"></div>
                 </form>
+
+                <div id="categoryFilters" class="mt-12 flex flex-wrap justify-center gap-3 fade-in">
+                    <button onclick="loadCategory('history')" class="px-6 py-2 rounded-full border border-white/20 hover:border-white/50 bg-black/20 backdrop-blur-sm text-gray-200 hover:text-white text-[10px] uppercase tracking-[0.2em] transition-all">
+                        History
+                    </button>
+                    <button onclick="loadCategory('spiritual')" class="px-6 py-2 rounded-full border border-white/20 hover:border-white/50 bg-black/20 backdrop-blur-sm text-gray-200 hover:text-white text-[10px] uppercase tracking-[0.2em] transition-all">
+                        Spiritual
+                    </button>
+                    <button onclick="loadCategory('island')" class="px-6 py-2 rounded-full border border-white/20 hover:border-white/50 bg-black/20 backdrop-blur-sm text-gray-200 hover:text-white text-[10px] uppercase tracking-[0.2em] transition-all">
+                        Islands
+                    </button>
+                    <button onclick="loadCategory('beach')" class="px-6 py-2 rounded-full border border-white/20 hover:border-white/50 bg-black/20 backdrop-blur-sm text-gray-200 hover:text-white text-[10px] uppercase tracking-[0.2em] transition-all">
+                        Beach
+                    </button>
+                    <button onclick="loadCategory('hill')" class="px-6 py-2 rounded-full border border-white/20 hover:border-white/50 bg-black/20 backdrop-blur-sm text-gray-200 hover:text-white text-[10px] uppercase tracking-[0.2em] transition-all">
+                        Hills
+                    </button>
+                    <button onclick="loadCategory('nature')" class="px-6 py-2 rounded-full border border-white/20 hover:border-white/50 bg-black/20 backdrop-blur-sm text-gray-200 hover:text-white text-[10px] uppercase tracking-[0.2em] transition-all">
+                        Nature
+                    </button>
+                </div>
             </div>
         </header>
 
-        <!-- Dynamic Content Container -->
         <div id="contentContainer" class="container mx-auto px-4 w-full max-w-6xl fade-in relative z-20 pb-20">
-            
-            <!-- Quick Filters -->
-            <div id="categoryFilters" class="mb-16 flex flex-wrap justify-center gap-4 fade-in opacity-90 hover:opacity-100 transition-opacity relative z-40">
-                <button onclick="loadCategory('history')" class="group px-8 py-3 rounded-full bg-slate-800/50 border border-slate-700 hover:border-orange-400 hover:bg-slate-800 text-gray-400 hover:text-orange-400 text-xs uppercase tracking-[0.2em] transition-all flex items-center gap-2 cursor-pointer shadow-lg hover:shadow-orange-500/20">
-                    <i data-lucide="landmark" class="w-4 h-4 group-hover:text-orange-400 transition-colors"></i> History
-                </button>
-                <button onclick="loadCategory('beach')" class="group px-8 py-3 rounded-full bg-slate-800/50 border border-slate-700 hover:border-cyan-400 hover:bg-slate-800 text-gray-400 hover:text-cyan-400 text-xs uppercase tracking-[0.2em] transition-all flex items-center gap-2 cursor-pointer shadow-lg hover:shadow-cyan-500/20">
-                    <i data-lucide="palmtree" class="w-4 h-4 group-hover:text-cyan-400 transition-colors"></i> Beach
-                </button>
-                <button onclick="loadCategory('hill')" class="group px-8 py-3 rounded-full bg-slate-800/50 border border-slate-700 hover:border-emerald-400 hover:bg-slate-800 text-gray-400 hover:text-emerald-400 text-xs uppercase tracking-[0.2em] transition-all flex items-center gap-2 cursor-pointer shadow-lg hover:shadow-emerald-500/20">
-                    <i data-lucide="mountain" class="w-4 h-4 group-hover:text-emerald-400 transition-colors"></i> Hills
-                </button>
-                <button onclick="loadCategory('nature')" class="group px-8 py-3 rounded-full bg-slate-800/50 border border-slate-700 hover:border-rose-400 hover:bg-slate-800 text-gray-400 hover:text-rose-400 text-xs uppercase tracking-[0.2em] transition-all flex items-center gap-2 cursor-pointer shadow-lg hover:shadow-rose-500/20">
-                    <i data-lucide="leaf" class="w-4 h-4 group-hover:text-rose-400 transition-colors"></i> Nature
-                </button>
+
+            <div id="featuredGrid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Content injected via JS -->
             </div>
 
-            <!-- Featured Grid -->
-            <div id="featuredGrid" class="grid grid-cols-1 md:grid-cols-3 gap-8 relative z-20"></div>
-
-            <!-- Result View -->
-            <div id="resultView" class="hidden w-full relative z-20"></div>
-
-            <!-- City Directory (Browse All Area) -->
-            <div id="cityDirectory" class="hidden mt-4 bg-slate-900/95 border border-slate-800 rounded-2xl p-8 fade-in shadow-2xl relative z-50 backdrop-blur-xl">
-                <div class="flex justify-between items-center mb-6 border-b border-slate-800 pb-4">
-                    <div>
-                        <h3 class="text-3xl serif text-white">All Destinations</h3>
-                        <p class="text-xs text-gray-500 uppercase tracking-widest mt-1">A-Z Index</p>
-                    </div>
-                    <button onclick="toggleCityDirectory()" class="text-gray-400 hover:text-white p-2 hover:bg-slate-800 rounded-full transition-colors"><i data-lucide="x" class="w-6 h-6"></i></button>
-                </div>
-                <div id="directoryGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 text-sm">
-                    <!-- Injected via JS -->
-                </div>
+            <div id="resultView" class="hidden w-full">
+                <!-- Content injected via JS -->
             </div>
 
         </div>
 
     </main>
 
-    <footer class="mt-auto py-10 text-center border-t border-slate-800 bg-slate-950/80 backdrop-blur-md relative z-20">
-        <p class="text-gold serif tracking-widest text-lg mb-2">Travel Buddy</p>
-        <p class="text-gray-600 text-xs uppercase tracking-widest">Premium Travel Database | Made by Anush Singh</p>
+    <footer class="mt-auto py-8 text-center border-t border-white/5 bg-[#020617] relative z-20">
+        <p class="text-gold serif tracking-widest text-sm mb-2">Travel Buddy</p>
+        <p class="text-gray-600 text-[10px] uppercase tracking-widest">Premium Travel Database</p>
     </footer>
 
     <script>
+        // --- CONFIGURATION ---
         const API_URL = "https://hhh9cgm40h.execute-api.ap-south-1.amazonaws.com/stage1";
         
-        // --- DATA MAPPINGS ---
-        const LOCAL_DB = {
-            "agra": { "city": "Agra", "state": "Uttar Pradesh", "nickname": "Taj City", "famous_for": "Taj Mahal", "best_places": ["Taj Mahal", "Agra Fort", "Mehtab Bagh"], "food": ["Petha", "Mughlai Delicacies"], "market": ["Sadar Bazaar", "Kinari Bazaar"], "climate": "Hot semi-arid", "best_time": "Oct-Mar", "estimated_cost": {"total": "₹2500/day", "stay": "₹1200", "food": "₹800", "activity": "₹500"}, "season_breakdown": {"summer": "Very Hot", "winter": "Pleasant", "monsoon": "Humid"} },
-            "ahmedabad": { "city": "Ahmedabad", "state": "Gujarat", "nickname": "Manchester of India", "famous_for": "Textiles, History", "best_places": ["Sabarmati Ashram", "Kankaria Lake"], "food": ["Dhokla", "Fafda"], "market": ["Law Garden"], "climate": "Hot semi-arid", "best_time": "Nov-Feb", "estimated_cost": {"total": "₹2200/day", "stay": "₹1000", "food": "₹700", "activity": "₹500"}, "season_breakdown": {"summer": "Hot", "winter": "Mild", "monsoon": "Moderate"} },
-            "alleppey": { "city": "Alleppey", "state": "Kerala", "nickname": "Venice of the East", "famous_for": "Backwaters, Houseboats", "best_places": ["Backwaters", "Alappuzha Beach"], "food": ["Kerala Fish Curry", "Puttu"], "market": ["Mullakkal"], "climate": "Tropical", "best_time": "Sep-Mar", "estimated_cost": {"total": "₹3500/day", "stay": "₹2000", "food": "₹1000", "activity": "₹500"}, "season_breakdown": {"summer": "Humid", "winter": "Pleasant", "monsoon": "Rainy"} },
-            "amritsar": { "city": "Amritsar", "state": "Punjab", "nickname": "Golden City", "famous_for": "Golden Temple", "best_places": ["Golden Temple", "Wagah Border"], "food": ["Amritsari Kulcha", "Lassi"], "market": ["Hall Bazaar"], "climate": "Semi-arid", "best_time": "Nov-Mar", "estimated_cost": {"total": "₹2000/day", "stay": "₹1000", "food": "₹600", "activity": "₹400"}, "season_breakdown": {"summer": "Hot", "winter": "Cold", "monsoon": "Moderate"} },
-            "aurangabad": { "city": "Aurangabad", "state": "Maharashtra", "nickname": "City of Gates", "famous_for": "Ajanta & Ellora Caves", "best_places": ["Ajanta Caves", "Ellora Caves", "Bibi Ka Maqbara"], "food": ["Naan Qalia", "Tahri"], "market": ["Connaught Market"], "climate": "Semi-arid", "best_time": "Oct-Mar", "estimated_cost": {"total": "₹2500/day", "stay": "₹1200", "food": "₹700", "activity": "₹600"}, "season_breakdown": {"summer": "Hot", "winter": "Pleasant", "monsoon": "Moderate"} },
-            "bangalore": { "city": "Bangalore", "state": "Karnataka", "nickname": "Silicon Valley of India", "famous_for": "Tech, Gardens, Nightlife", "best_places": ["Lalbagh", "Cubbon Park", "Vidhana Soudha"], "food": ["Masala Dosa", "Filter Coffee"], "market": ["MG Road", "Commercial Street"], "climate": "Moderate", "best_time": "All Year", "estimated_cost": {"total": "₹3000/day", "stay": "₹1500", "food": "₹1000", "activity": "₹500"}, "season_breakdown": {"summer": "Warm", "winter": "Cool", "monsoon": "Pleasant"} },
-            "bhopal": { "city": "Bhopal", "state": "Madhya Pradesh", "nickname": "City of Lakes", "famous_for": "Lakes, History", "best_places": ["Upper Lake", "Van Vihar", "Sanchi Stupa"], "food": ["Poha Jalebi", "Bhopali Gosht Korma"], "market": ["Chowk Bazaar"], "climate": "Humid subtropical", "best_time": "Oct-Mar", "estimated_cost": {"total": "₹2000/day", "stay": "₹1000", "food": "₹600", "activity": "₹400"}, "season_breakdown": {"summer": "Hot", "winter": "Cool", "monsoon": "Heavy Rain"} },
-            "bhubaneswar": { "city": "Bhubaneswar", "state": "Odisha", "nickname": "Temple City of India", "famous_for": "Temples, Architecture", "best_places": ["Lingaraj Temple", "Udayagiri Caves"], "food": ["Chhena Poda", "Dahi Bara"], "market": ["Ekamra Haat"], "climate": "Tropical", "best_time": "Oct-Feb", "estimated_cost": {"total": "₹2200/day", "stay": "₹1000", "food": "₹700", "activity": "₹500"}, "season_breakdown": {"summer": "Hot", "winter": "Mild", "monsoon": "Heavy Rain"} },
-            "chennai": { "city": "Chennai", "state": "Tamil Nadu", "nickname": "Detroit of India", "famous_for": "Beaches, Temples, Culture", "best_places": ["Marina Beach", "Kapaleeshwarar Temple"], "food": ["Idli Sambar", "Chettinad Chicken"], "market": ["T. Nagar"], "climate": "Tropical wet and dry", "best_time": "Nov-Feb", "estimated_cost": {"total": "₹2500/day", "stay": "₹1200", "food": "₹800", "activity": "₹500"}, "season_breakdown": {"summer": "Hot & Humid", "winter": "Pleasant", "monsoon": "Heavy Rain"} },
-            "coimbatore": { "city": "Coimbatore", "state": "Tamil Nadu", "nickname": "Manchester of South India", "famous_for": "Textiles, Industry, Nature", "best_places": ["Marudamalai Temple", "Adiyogi Shiva"], "food": ["South Indian Thali", "Kongunadu Cuisine"], "market": ["Cross Cut Road"], "climate": "Warm", "best_time": "Sep-Mar", "estimated_cost": {"total": "₹2000/day", "stay": "₹1000", "food": "₹600", "activity": "₹400"}, "season_breakdown": {"summer": "Warm", "winter": "Pleasant", "monsoon": "Moderate"} },
-            "coorg": { "city": "Coorg", "state": "Karnataka", "nickname": "Scotland of India", "famous_for": "Coffee Plantations, Hills", "best_places": ["Abbey Falls", "Raja's Seat", "Dubare Elephant Camp"], "food": ["Pandiar Curry", "Akki Roti"], "market": ["Kushalnagar Market"], "climate": "Tropical highland", "best_time": "Oct-Mar", "estimated_cost": {"total": "₹3000/day", "stay": "₹1500", "food": "₹1000", "activity": "₹500"}, "season_breakdown": {"summer": "Pleasant", "winter": "Cool", "monsoon": "Heavy Rain"} },
-            "darjeeling": { "city": "Darjeeling", "state": "West Bengal", "nickname": "Queen of the Hills", "famous_for": "Tea Gardens, Himalayas view", "best_places": ["Tiger Hill", "Batasia Loop", "Tea Estates"], "food": ["Momos", "Thukpa", "Darjeeling Tea"], "market": ["Mall Road"], "climate": "Highland", "best_time": "Apr-Jun", "estimated_cost": {"total": "₹2800/day", "stay": "₹1400", "food": "₹800", "activity": "₹600"}, "season_breakdown": {"summer": "Pleasant", "winter": "Cold", "monsoon": "Heavy Fog/Rain"} },
-            "delhi": { "city": "Delhi", "state": "Delhi", "nickname": "Dilwalo Ki Dilli", "famous_for": "History, Food", "best_places": ["India Gate", "Red Fort", "Qutub Minar"], "food": ["Chole Bhature", "Chaat", "Butter Chicken"], "market": ["Chandni Chowk", "Sarojini Nagar"], "climate": "Semi-arid", "best_time": "Oct-Mar", "estimated_cost": {"total": "₹3000/day", "stay": "₹1500", "food": "₹1000", "activity": "₹500"}, "season_breakdown": {"summer": "Scorching", "winter": "Cold/Foggy", "monsoon": "Humid"} },
-            "gangtok": { "city": "Gangtok", "state": "Sikkim", "nickname": "Land of Monasteries", "famous_for": "Himalayan Views, Monasteries", "best_places": ["Tsomgo Lake", "Nathu La Pass", "Rumtek Monastery"], "food": ["Momos", "Thukpa", "Gundruk"], "market": ["MG Marg"], "climate": "Highland", "best_time": "Mar-Jun", "estimated_cost": {"total": "₹3500/day", "stay": "₹1800", "food": "₹1000", "activity": "₹700"}, "season_breakdown": {"summer": "Pleasant", "winter": "Cold", "monsoon": "Heavy Rain"} },
-            "goa": { "city": "Goa", "state": "Goa", "nickname": "Pearl of Orient", "famous_for": "Beaches, Nightlife, Portuguese Heritage", "best_places": ["Baga Beach", "Calangute Beach", "Basilica of Bom Jesus"], "food": ["Goan Fish Curry", "Vindaloo", "Bebinca"], "market": ["Anjuna Flea Market", "Mapusa Market"], "climate": "Tropical monsoon", "best_time": "Nov-Mar", "estimated_cost": {"total": "₹4000/day", "stay": "₹2000", "food": "₹1200", "activity": "₹800"}, "season_breakdown": {"summer": "Humid", "winter": "Pleasant", "monsoon": "Rainy"} },
-            "gokarna": { "city": "Gokarna", "state": "Karnataka", "nickname": "Temple Town & Beaches", "famous_for": "Pristine Beaches, Temples", "best_places": ["Om Beach", "Kudle Beach", "Mahabaleshwar Temple"], "food": ["Seafood", "South Indian Thali"], "market": ["Car Street"], "climate": "Tropical", "best_time": "Oct-Mar", "estimated_cost": {"total": "₹2500/day", "stay": "₹1000", "food": "₹800", "activity": "₹700"}, "season_breakdown": {"summer": "Hot & Humid", "winter": "Pleasant", "monsoon": "Rainy"} },
-            "guwahati": { "city": "Guwahati", "state": "Assam", "nickname": "Gateway to Northeast India", "famous_for": "River Brahmaputra, Temples", "best_places": ["Kamakhya Temple", "Brahmaputra River Cruise"], "food": ["Assamese Thali", "Masor Tenga"], "market": ["Paltan Bazaar"], "climate": "Humid subtropical", "best_time": "Oct-Mar", "estimated_cost": {"total": "₹2200/day", "stay": "₹1000", "food": "₹700", "activity": "₹500"}, "season_breakdown": {"summer": "Hot & Humid", "winter": "Cool", "monsoon": "Heavy Rain"} },
-            "hampi": { "city": "Hampi", "state": "Karnataka", "nickname": "City of Ruins", "famous_for": "Ancient Ruins, Temples, History", "best_places": ["Virupaksha Temple", "Vijaya Vittala Temple", "Hippie Island"], "food": ["South Indian", "Israeli Food"], "market": ["Hampi Bazaar"], "climate": "Semi-arid", "best_time": "Oct-Feb", "estimated_cost": {"total": "₹2000/day", "stay": "₹800", "food": "₹700", "activity": "₹500"}, "season_breakdown": {"summer": "Scorching", "winter": "Pleasant", "monsoon": "Moderate"} },
-            "hyderabad": { "city": "Hyderabad", "state": "Telangana", "nickname": "City of Pearls", "famous_for": "Biryani, History, IT", "best_places": ["Charminar", "Golconda Fort", "Ramoji Film City"], "food": ["Hyderabadi Biryani", "Haleem"], "market": ["Laad Bazaar"], "climate": "Tropical wet and dry", "best_time": "Oct-Mar", "estimated_cost": {"total": "₹2500/day", "stay": "₹1200", "food": "₹800", "activity": "₹500"}, "season_breakdown": {"summer": "Hot", "winter": "Pleasant", "monsoon": "Rainy"} },
-            "indore": { "city": "Indore", "state": "Madhya Pradesh", "nickname": "Mini Mumbai", "famous_for": "Street Food, Palaces", "best_places": ["Rajwada Palace", "Sarafa Bazaar"], "food": ["Poha Jalebi", "Indori Namkeen"], "market": ["Sarafa Bazaar (Night Market)"], "climate": "Humid subtropical", "best_time": "Oct-Mar", "estimated_cost": {"total": "₹1800/day", "stay": "₹800", "food": "₹600", "activity": "₹400"}, "season_breakdown": {"summer": "Hot", "winter": "Cool", "monsoon": "Moderate"} },
-            "jaipur": { "city": "Jaipur", "state": "Rajasthan", "nickname": "Pink City", "famous_for": "Forts, Palaces, Culture", "best_places": ["Amber Fort", "Hawa Mahal", "City Palace"], "food": ["Dal Baati Churma", "Ghevar", "Lassi"], "market": ["Johari Bazaar", "Bapu Bazaar"], "climate": "Hot semi-arid", "best_time": "Oct-Mar", "estimated_cost": {"total": "₹3000/day", "stay": "₹1500", "food": "₹1000", "activity": "₹500"}, "season_breakdown": {"summer": "Scorching", "winter": "Pleasant", "monsoon": "Humid"} },
-            "jaisalmer": { "city": "Jaisalmer", "state": "Rajasthan", "nickname": "Golden City", "famous_for": "Desert, Forts, Havelis", "best_places": ["Jaisalmer Fort", "Sam Sand Dunes", "Patwon Ki Haveli"], "food": ["Ker Sangri", "Gatte ki Sabzi"], "market": ["Sadar Bazaar"], "climate": "Arid", "best_time": "Oct-Mar", "estimated_cost": {"total": "₹3000/day", "stay": "₹1500", "food": "₹800", "activity": "₹700"}, "season_breakdown": {"summer": "Unbearably Hot", "winter": "Pleasant Days/Cold Nights", "monsoon": "Scant Rain"} },
-            "jammu": { "city": "Jammu", "state": "Jammu & Kashmir", "nickname": "City of Temples", "famous_for": "Temples, Gateways to Himalayas", "best_places": ["Raghunath Temple", "Bahu Fort"], "food": ["Kaladi Kulcha", "Rajma Chawal"], "market": ["Raghunath Bazaar"], "climate": "Humid subtropical", "best_time": "Oct-Mar", "estimated_cost": {"total": "₹2000/day", "stay": "₹1000", "food": "₹600", "activity": "₹400"}, "season_breakdown": {"summer": "Hot", "winter": "Cold", "monsoon": "Heavy Rain"} },
-            "jim corbett": { "city": "Jim Corbett", "state": "Uttarakhand", "nickname": "Land of Roar", "famous_for": "Wildlife, Tigers, Nature", "best_places": ["Jungle Safari", "Corbett Waterfall"], "food": ["Kumaoni Cuisine"], "market": ["Local Souvenir Shops"], "climate": "Subtropical", "best_time": "Nov-Jun", "estimated_cost": {"total": "₹4000/day", "stay": "₹2500", "food": "₹1000", "activity": "₹500"}, "season_breakdown": {"summer": "Hot", "winter": "Cold/Foggy", "monsoon": "Closed for Safari"} },
-            "jodhpur": { "city": "Jodhpur", "state": "Rajasthan", "nickname": "Blue City", "famous_for": "Forts, Blue Houses, Culture", "best_places": ["Mehrangarh Fort", "Umaid Bhawan Palace"], "food": ["Mirchi Vada", "Makhaniya Lassi"], "market": ["Sardar Market"], "climate": "Arid", "best_time": "Oct-Mar", "estimated_cost": {"total": "₹2800/day", "stay": "₹1400", "food": "₹900", "activity": "₹500"}, "season_breakdown": {"summer": "Very Hot", "winter": "Pleasant", "monsoon": "Scant Rain"} },
-            "kanyakumari": { "city": "Kanyakumari", "state": "Tamil Nadu", "nickname": "Cape Comorin", "famous_for": "Southernmost Tip, Sunrise/Sunset", "best_places": ["Vivekananda Rock Memorial", "Thiruvalluvar Statue"], "food": ["Seafood", "South Indian Thali"], "market": ["Local Stalls"], "climate": "Tropical", "best_time": "Oct-Mar", "estimated_cost": {"total": "₹2000/day", "stay": "₹1000", "food": "₹600", "activity": "₹400"}, "season_breakdown": {"summer": "Humid", "winter": "Pleasant", "monsoon": "Rainy"} },
-            "kanpur": { "city": "Kanpur", "state": "Uttar Pradesh", "nickname": "Leather City", "famous_for": "Industry, Leather, History", "best_places": ["Allen Forest Zoo", "JK Temple"], "food": ["Thaggu ke Laddu", "Chaat"], "market": ["Naveen Market"], "climate": "Humid subtropical", "best_time": "Oct-Mar", "estimated_cost": {"total": "₹1800/day", "stay": "₹800", "food": "₹600", "activity": "₹400"}, "season_breakdown": {"summer": "Hot", "winter": "Cool", "monsoon": "Rainy"} },
-            "kaziranga": { "city": "Kaziranga", "state": "Assam", "nickname": "Rhino Land", "famous_for": "One-horned Rhinos, Wildlife", "best_places": ["Elephant Safari", "Jeep Safari"], "food": ["Assamese Cuisine"], "market": ["Local Handicrafts"], "climate": "Tropical", "best_time": "Nov-Apr", "estimated_cost": {"total": "₹3500/day", "stay": "₹2000", "food": "₹1000", "activity": "₹500"}, "season_breakdown": {"summer": "Hot", "winter": "Pleasant", "monsoon": "Flooded/Closed"} },
-            "kochi": { "city": "Kochi", "state": "Kerala", "nickname": "Queen of Arabian Sea", "famous_for": "History, Culture, Backwaters", "best_places": ["Fort Kochi", "Chinese Fishing Nets", "Mattancherry Palace"], "food": ["Kerala Fish Fry", "Appam with Stew"], "market": ["Jew Town"], "climate": "Tropical monsoon", "best_time": "Oct-Mar", "estimated_cost": {"total": "₹2800/day", "stay": "₹1400", "food": "₹900", "activity": "₹500"}, "season_breakdown": {"summer": "Humid", "winter": "Pleasant", "monsoon": "Heavy Rain"} },
-            "kodaikanal": { "city": "Kodaikanal", "state": "Tamil Nadu", "nickname": "Princess of Hill Stations", "famous_for": "Mist, Lakes, Forests", "best_places": ["Kodai Lake", "Coaker's Walk", "Pillar Rocks"], "food": ["Homemade Chocolates", "Tibetan Food"], "market": ["Anna Salai"], "climate": "Subtropical highland", "best_time": "Oct-Jun", "estimated_cost": {"total": "₹2500/day", "stay": "₹1200", "food": "₹800", "activity": "₹500"}, "season_breakdown": {"summer": "Pleasant", "winter": "Cold", "monsoon": "Misty/Rainy"} },
-            "kolkata": { "city": "Kolkata", "state": "West Bengal", "nickname": "City of Joy", "famous_for": "Culture, History, Food", "best_places": ["Victoria Memorial", "Howrah Bridge"], "food": ["Rosogolla", "Kathi Roll", "Fish Curry"], "market": ["New Market"], "climate": "Tropical wet and dry", "best_time": "Oct-Mar", "estimated_cost": {"total": "₹2200/day", "stay": "₹1000", "food": "₹800", "activity": "₹400"}, "season_breakdown": {"summer": "Hot & Humid", "winter": "Mild", "monsoon": "Heavy Rain"} },
-            "leh": { "city": "Leh", "state": "Ladakh", "nickname": "High Desert", "famous_for": "Mountains, Monasteries, Adventure", "best_places": ["Pangong Lake", "Nubra Valley", "Leh Palace"], "food": ["Thukpa", "Momos", "Butter Tea"], "market": ["Leh Market"], "climate": "Cold desert", "best_time": "May-Sep", "estimated_cost": {"total": "₹3500/day", "stay": "₹1500", "food": "₹1000", "activity": "₹1000"}, "season_breakdown": {"summer": "Pleasant", "winter": "Harsh/Closed", "monsoon": "Occasional Rain"} },
-            "lonavala": { "city": "Lonavala", "state": "Maharashtra", "nickname": "Jewel of Sahyadri", "famous_for": "Hills, Waterfalls, Chikki", "best_places": ["Tiger's Leap", "Bhushi Dam", "Karla Caves"], "food": ["Chikki", "Vada Pav"], "market": ["Lonavala Bazaar"], "climate": "Tropical", "best_time": "Jun-Feb", "estimated_cost": {"total": "₹2500/day", "stay": "₹1200", "food": "₹800", "activity": "₹500"}, "season_breakdown": {"summer": "Warm", "winter": "Cool", "monsoon": "Beautiful & Rainy"} },
-            "lucknow": { "city": "Lucknow", "state": "Uttar Pradesh", "nickname": "City of Nawabs", "famous_for": "History, Culture, Food", "best_places": ["Bara Imambara", "Rumi Darwaza"], "food": ["Tunday Kabab", "Biryani"], "market": ["Hazratganj"], "climate": "Humid subtropical", "best_time": "Oct-Mar", "estimated_cost": {"total": "₹2000/day", "stay": "₹1000", "food": "₹700", "activity": "₹300"}, "season_breakdown": {"summer": "Hot", "winter": "Cool", "monsoon": "Rainy"} },
-            "madurai": { "city": "Madurai", "state": "Tamil Nadu", "nickname": "Athens of the East", "famous_for": "Temples, Culture", "best_places": ["Meenakshi Amman Temple", "Thirumalai Nayakkar Mahal"], "food": ["Jigarthanda", "Idli"], "market": ["Puthu Mandapam"], "climate": "Hot semi-arid", "best_time": "Oct-Mar", "estimated_cost": {"total": "₹2000/day", "stay": "₹1000", "food": "₹600", "activity": "₹400"}, "season_breakdown": {"summer": "Very Hot", "winter": "Pleasant", "monsoon": "Moderate"} },
-            "mahabaleshwar": { "city": "Mahabaleshwar", "state": "Maharashtra", "nickname": "Land of Strawberries", "famous_for": "Viewpoints, Strawberries, Hills", "best_places": ["Arthur's Seat", "Venna Lake", "Mapro Garden"], "food": ["Strawberries & Cream", "Corn Pattice"], "market": ["Main Market"], "climate": "Subtropical highland", "best_time": "Oct-Jun", "estimated_cost": {"total": "₹2800/day", "stay": "₹1400", "food": "₹900", "activity": "₹500"}, "season_breakdown": {"summer": "Pleasant", "winter": "Cold", "monsoon": "Very Heavy Rain"} },
-            "manali": { "city": "Manali", "state": "Himachal Pradesh", "nickname": "Valley of Gods", "famous_for": "Snow, Adventure, Nature", "best_places": ["Solang Valley", "Rohtang Pass", "Hadimba Temple"], "food": ["Trout Fish", "Siddu"], "market": ["Mall Road"], "climate": "Highland", "best_time": "Oct-Jun", "estimated_cost": {"total": "₹3000/day", "stay": "₹1500", "food": "₹900", "activity": "₹600"}, "season_breakdown": {"summer": "Pleasant", "winter": "Snowy/Cold", "monsoon": "Rainy risk"} },
-            "mumbai": { "city": "Mumbai", "state": "Maharashtra", "nickname": "City of Dreams", "famous_for": "Bollywood, Coastline, Colonial buildings", "best_places": ["Gateway of India", "Marine Drive", "Juhu Beach"], "food": ["Vada Pav", "Pav Bhaji", "Bombay Sandwich"], "market": ["Colaba Causeway", "Crawford Market"], "climate": "Tropical", "best_time": "Nov-Feb", "estimated_cost": {"total": "₹3500/day", "stay": "₹1800", "food": "₹1000", "activity": "₹700"}, "season_breakdown": {"summer": "Humid", "winter": "Pleasant", "monsoon": "Heavy Rain"} },
-            "munnar": { "city": "Munnar", "state": "Kerala", "nickname": "Tea Garden", "famous_for": "Tea, Hills", "best_places": ["Tea Museum", "Mattupetty Dam", "Eravikulam National Park"], "food": ["Kerala Cuisine", "Tea"], "market": ["Munnar Market"], "climate": "Highland", "best_time": "Sep-Mar", "estimated_cost": {"total": "₹2800/day", "stay": "₹1400", "food": "₹900", "activity": "₹500"}, "season_breakdown": {"summer": "Pleasant", "winter": "Cold", "monsoon": "Misty/Rainy"} },
-            "mussoorie": { "city": "Mussoorie", "state": "Uttarakhand", "nickname": "Queen of the Hills", "famous_for": "Hills, Views, Waterfalls", "best_places": ["Kempty Falls", "Gun Hill", "Mall Road"], "food": ["Garhwali Cuisine", "Momos"], "market": ["Mall Road", "Landour Bazaar"], "climate": "Subtropical highland", "best_time": "Mar-Jun", "estimated_cost": {"total": "₹2800/day", "stay": "₹1400", "food": "₹900", "activity": "₹500"}, "season_breakdown": {"summer": "Pleasant", "winter": "Cold", "monsoon": "Misty"} },
-            "mysore": { "city": "Mysore", "state": "Karnataka", "nickname": "City of Palaces", "famous_for": "Palace, Silk", "best_places": ["Mysore Palace", "Chamundi Hill", "Brindavan Gardens"], "food": ["Mysore Pak", "Mysore Masala Dosa"], "market": ["Devaraja Market"], "climate": "Tropical savanna", "best_time": "Oct-Mar", "estimated_cost": {"total": "₹2200/day", "stay": "₹1000", "food": "₹700", "activity": "₹500"}, "season_breakdown": {"summer": "Warm", "winter": "Pleasant", "monsoon": "Moderate"} },
-            "nagpur": { "city": "Nagpur", "state": "Maharashtra", "nickname": "Orange City", "famous_for": "Oranges, Tiger Reserves nearby, Center of India", "best_places": ["Deekshabhoomi", "Sitabuldi Fort"], "food": ["Saoji Cuisine", "Oranges"], "market": ["Sitabuldi Main Road"], "climate": "Tropical wet and dry", "best_time": "Oct-Mar", "estimated_cost": {"total": "₹1800/day", "stay": "₹800", "food": "₹600", "activity": "₹400"}, "season_breakdown": {"summer": "Very Hot", "winter": "Pleasant", "monsoon": "Rainy"} },
-            "nainital": { "city": "Nainital", "state": "Uttarakhand", "nickname": "Lake District", "famous_for": "Lakes, Hills", "best_places": ["Naini Lake", "Naina Devi Temple", "Snow View Point"], "food": ["Kumaoni Cuisine", "Momos"], "market": ["Mall Road", "Tibetan Market"], "climate": "Subtropical highland", "best_time": "Mar-Jun", "estimated_cost": {"total": "₹2800/day", "stay": "₹1400", "food": "₹900", "activity": "₹500"}, "season_breakdown": {"summer": "Pleasant", "winter": "Cold", "monsoon": "Misty"} },
-            "nashik": { "city": "Nashik", "state": "Maharashtra", "nickname": "Wine Capital of India", "famous_for": "Vineyards, Temples, Kumbh Mela", "best_places": ["Sula Vineyards", "Trimbakeshwar Temple", "Panchvati"], "food": ["Misal Pav", "Wine"], "market": ["Main Road"], "climate": "Tropical semi-arid", "best_time": "Oct-Mar", "estimated_cost": {"total": "₹2200/day", "stay": "₹1000", "food": "₹700", "activity": "₹500"}, "season_breakdown": {"summer": "Hot", "winter": "Pleasant", "monsoon": "Moderate"} },
-            "ooty": { "city": "Ooty", "state": "Tamil Nadu", "nickname": "Queen of Hills", "famous_for": "Tea, Gardens", "best_places": ["Ooty Lake", "Gardens"], "food": ["Chocolate"], "market": ["Commercial Rd"], "climate": "Subtropical", "best_time": "Oct-Jun", "estimated_cost": {"total": "₹2800/day", "stay": "₹1400", "food": "₹900", "activity": "₹500"}, "season_breakdown": {"summer": "Pleasant", "winter": "Cold", "monsoon": "Misty"} },
-            "patna": { "city": "Patna", "state": "Bihar", "nickname": "Pataliputra", "famous_for": "History, Culture", "best_places": ["Golghar", "Patna Museum", "Takht Sri Patna Sahib"], "food": ["Litti Chokha"], "market": ["Maurya Lok"], "climate": "Humid subtropical", "best_time": "Oct-Mar", "estimated_cost": {"total": "₹1800/day", "stay": "₹800", "food": "₹600", "activity": "₹400"}, "season_breakdown": {"summer": "Hot", "winter": "Cool", "monsoon": "Rainy"} },
-            "pondicherry": { "city": "Pondicherry", "state": "Puducherry", "nickname": "Paris of the East", "famous_for": "French Colony, Beaches, Spirituality", "best_places": ["Promenade Beach", "Auroville", "French Quarter"], "food": ["French Cuisine", "Seafood"], "market": ["Goubert Market"], "climate": "Tropical wet and dry", "best_time": "Oct-Mar", "estimated_cost": {"total": "₹2800/day", "stay": "₹1400", "food": "₹900", "activity": "₹500"}, "season_breakdown": {"summer": "Hot & Humid", "winter": "Pleasant", "monsoon": "Rainy"} },
-            "prayagraj": { "city": "Prayagraj", "state": "Uttar Pradesh", "nickname": "Sangam City", "famous_for": "Triveni Sangam", "best_places": ["Sangam", "Allahabad Fort"], "food": ["Chaat", "Guava"], "market": ["Civil Lines"], "climate": "Subtropical", "best_time": "Oct-Mar", "estimated_cost": {"total": "₹2000/day", "stay": "₹1000", "food": "₹600", "activity": "₹400"}, "season_breakdown": {"summer": "Hot", "winter": "Cool", "monsoon": "Humid"} },
-            "pune": { "city": "Pune", "state": "Maharashtra", "nickname": "Oxford of East", "famous_for": "Culture, Education", "best_places": ["Shaniwar Wada"], "food": ["Misal Pav"], "market": ["FC Road"], "climate": "Tropical", "best_time": "Oct-Mar", "estimated_cost": {"total": "₹2500/day", "stay": "₹1200", "food": "₹800", "activity": "₹500"}, "season_breakdown": {"summer": "Hot", "winter": "Pleasant", "monsoon": "Moderate"} },
-            "puri": { "city": "Puri", "state": "Odisha", "nickname": "Jagannath Dham", "famous_for": "Jagannath Temple, Beach", "best_places": ["Jagannath Temple", "Puri Beach", "Konark Sun Temple nearby"], "food": ["Mahaprasad", "Seafood"], "market": ["Grand Road"], "climate": "Tropical", "best_time": "Oct-Feb", "estimated_cost": {"total": "₹2000/day", "stay": "₹1000", "food": "₹600", "activity": "₹400"}, "season_breakdown": {"summer": "Hot & Humid", "winter": "Pleasant", "monsoon": "Heavy Rain"} },
-            "rameswaram": { "city": "Rameswaram", "state": "Tamil Nadu", "nickname": "Bridge on the Ocean", "famous_for": "Temples, Spirituality, Pamban Bridge", "best_places": ["Ramanathaswamy Temple", "Dhanushkodi", "Pamban Bridge"], "food": ["South Indian Vegetarian"], "market": ["Temple Area"], "climate": "Tropical", "best_time": "Oct-Mar", "estimated_cost": {"total": "₹2000/day", "stay": "₹1000", "food": "₹600", "activity": "₹400"}, "season_breakdown": {"summer": "Hot", "winter": "Pleasant", "monsoon": "Rainy"} },
-            "ranthambore": { "city": "Ranthambore", "state": "Rajasthan", "nickname": "Tiger's Realm", "famous_for": "Wildlife, Tigers, Fort", "best_places": ["Ranthambore National Park Safari", "Ranthambore Fort"], "food": ["Rajasthani Cuisine"], "market": ["Local Souvenirs"], "climate": "Subtropical", "best_time": "Oct-Jun", "estimated_cost": {"total": "₹4500/day", "stay": "₹2500", "food": "₹1000", "activity": "₹1000"}, "season_breakdown": {"summer": "Very Hot", "winter": "Pleasant", "monsoon": "Closed for Safari"} },
-            "rishikesh": { "city": "Rishikesh", "state": "Uttarakhand", "nickname": "Yoga Capital", "famous_for": "Yoga, Rafting", "best_places": ["Laxman Jhula"], "food": ["Veg Food"], "market": ["Laxman Jhula"], "climate": "Subtropical", "best_time": "Sep-Nov", "estimated_cost": {"total": "₹2500/day", "stay": "₹1000", "food": "₹700", "activity": "₹800"}, "season_breakdown": {"summer": "Warm", "winter": "Cold", "monsoon": "Rainy"} },
-            "shillong": { "city": "Shillong", "state": "Meghalaya", "nickname": "Scotland of the East", "famous_for": "Hills, Waterfalls, Music", "best_places": ["Umiam Lake", "Elephant Falls", "Shillong Peak"], "food": ["Khasi Cuisine", "Jadoh"], "market": ["Police Bazaar"], "climate": "Subtropical highland", "best_time": "Sep-May", "estimated_cost": {"total": "₹2800/day", "stay": "₹1400", "food": "₹900", "activity": "₹500"}, "season_breakdown": {"summer": "Pleasant", "winter": "Cold", "monsoon": "Very Heavy Rain"} },
-            "shimla": { "city": "Shimla", "state": "Himachal Pradesh", "nickname": "Queen of Hills", "famous_for": "Colonial Charm", "best_places": ["The Ridge", "Mall Road"], "food": ["Bakery"], "market": ["Mall Road"], "climate": "Subtropical", "best_time": "Mar-Jun", "estimated_cost": {"total": "₹3000/day", "stay": "₹1500", "food": "₹1000", "activity": "₹500"}, "season_breakdown": {"summer": "Pleasant", "winter": "Cold/Snow", "monsoon": "Misty"} },
-            "srinagar": { "city": "Srinagar", "state": "Jammu & Kashmir", "nickname": "Paradise", "famous_for": "Dal Lake", "best_places": ["Dal Lake", "Gardens"], "food": ["Wazwan"], "market": ["Lal Chowk"], "climate": "Subtropical", "best_time": "Apr-Oct", "estimated_cost": {"total": "₹3500/day", "stay": "₹1800", "food": "₹1000", "activity": "₹700"}, "season_breakdown": {"summer": "Pleasant", "winter": "Cold", "monsoon": "Moderate"} },
-            "sundarbans": { "city": "Sundarbans", "state": "West Bengal", "nickname": "Land of Tigers", "famous_for": "Mangroves, Tigers", "best_places": ["Safari"], "food": ["Seafood"], "market": ["Local"], "climate": "Tropical", "best_time": "Sep-Mar", "estimated_cost": {"total": "₹3500/day", "stay": "₹1800", "food": "₹1000", "activity": "₹700"}, "season_breakdown": {"summer": "Hot", "winter": "Pleasant", "monsoon": "Rainy"} },
-            "surat": { "city": "Surat", "state": "Gujarat", "nickname": "Diamond City", "famous_for": "Diamonds, Food", "best_places": ["Dumas Beach"], "food": ["Locho"], "market": ["Textile Market"], "climate": "Tropical", "best_time": "Oct-Mar", "estimated_cost": {"total": "₹2200/day", "stay": "₹1000", "food": "₹700", "activity": "₹500"}, "season_breakdown": {"summer": "Hot", "winter": "Pleasant", "monsoon": "Rainy"} },
-            "swaraj dweep": { "city": "Swaraj Dweep", "state": "Andaman", "nickname": "Beach Paradise", "famous_for": "Beaches, Scuba", "best_places": ["Radhanagar"], "food": ["Seafood"], "market": ["Local"], "climate": "Tropical", "best_time": "Oct-May", "estimated_cost": {"total": "₹4500/day", "stay": "₹2500", "food": "₹1000", "activity": "₹1000"}, "season_breakdown": {"summer": "Warm", "winter": "Pleasant", "monsoon": "Rainy"} },
-            "thiruvananthapuram": { "city": "Thiruvananthapuram", "state": "Kerala", "nickname": "Evergreen City", "famous_for": "Temples", "best_places": ["Padmanabhaswamy Temple"], "food": ["Seafood"], "market": ["Chalai"], "climate": "Tropical", "best_time": "Oct-Mar", "estimated_cost": {"total": "₹2500/day", "stay": "₹1200", "food": "₹800", "activity": "₹500"}, "season_breakdown": {"summer": "Humid", "winter": "Pleasant", "monsoon": "Rainy"} },
-            "tirupati": { "city": "Tirupati", "state": "Andhra Pradesh", "nickname": "Spiritual Capital", "famous_for": "Temple", "best_places": ["Tirumala"], "food": ["Laddu"], "market": ["Bazaar"], "climate": "Tropical", "best_time": "Sep-Feb", "estimated_cost": {"total": "₹2000/day", "stay": "₹1000", "food": "₹600", "activity": "₹400"}, "season_breakdown": {"summer": "Hot", "winter": "Pleasant", "monsoon": "Moderate"} },
-            "udaipur": { "city": "Udaipur", "state": "Rajasthan", "nickname": "City of Lakes", "famous_for": "Lakes, Palaces", "best_places": ["City Palace", "Lake Pichola"], "food": ["Dal Baati"], "market": ["Hathi Pol"], "climate": "Semi-arid", "best_time": "Sep-Mar", "estimated_cost": {"total": "₹3200/day", "stay": "₹1600", "food": "₹1000", "activity": "₹600"}, "season_breakdown": {"summer": "Hot", "winter": "Pleasant", "monsoon": "Light Rain"} },
-            "vadodara": { "city": "Vadodara", "state": "Gujarat", "nickname": "Cultural City", "famous_for": "Palaces", "best_places": ["Laxmi Vilas"], "food": ["Gujarati Thali"], "market": ["Mandvi"], "climate": "Semi-arid", "best_time": "Oct-Mar", "estimated_cost": {"total": "₹2000/day", "stay": "₹1000", "food": "₹600", "activity": "₹400"}, "season_breakdown": {"summer": "Hot", "winter": "Pleasant", "monsoon": "Moderate"} },
-            "varanasi": { "city": "Varanasi", "state": "Uttar Pradesh", "nickname": "Spiritual Capital", "famous_for": "Ghats", "best_places": ["Ghats", "Kashi Vishwanath"], "food": ["Lassi"], "market": ["Godowlia"], "climate": "Subtropical", "best_time": "Oct-Mar", "estimated_cost": {"total": "₹2200/day", "stay": "₹1000", "food": "₹700", "activity": "₹500"}, "season_breakdown": {"summer": "Hot", "winter": "Cool", "monsoon": "Humid"} },
-            "visakhapatnam": { "city": "Visakhapatnam", "state": "Andhra Pradesh", "nickname": "Jewel of East", "famous_for": "Beaches", "best_places": ["RK Beach"], "food": ["Seafood"], "market": ["Jagadamba"], "climate": "Tropical", "best_time": "Oct-Mar", "estimated_cost": {"total": "₹2500/day", "stay": "₹1200", "food": "₹800", "activity": "₹500"}, "season_breakdown": {"summer": "Hot", "winter": "Pleasant", "monsoon": "Heavy Rain"} }
+        // GLOBAL DEFAULT: Dark, moody, golden-hour architecture
+        const DEFAULT_IMAGE = "https://images.unsplash.com/photo-1599661046289-e31897846e41?auto=format&fit=crop&w=800&q=80";
+
+        // CATEGORY SPECIFIC DEFAULTS (Used for backgrounds only now)
+        const CATEGORY_DEFAULTS = {
+            'history': "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=800&q=80",
+            'beach': "https://images.unsplash.com/photo-1473116763249-5643194129b6?auto=format&fit=crop&w=800&q=80",
+            'hill': "https://images.unsplash.com/photo-1586351012965-861624544334?auto=format&fit=crop&w=800&q=80",
+            'nature': "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=800&q=80",
+            'spiritual': "https://images.unsplash.com/photo-1561361513-2d000a50f0dc?auto=format&fit=crop&w=800&q=80",
+            'island': "https://images.unsplash.com/photo-1559128010-7c1ad6e1b6a5?auto=format&fit=crop&w=800&q=80"
         };
 
-        const CITIES_AUTOCOMPLETE = Object.keys(LOCAL_DB).map(city => LOCAL_DB[city].city).sort();
+        const AVAILABLE_CITIES = [
+            "agra", "ahmedabad", "alleppey", "amritsar", "aurangabad", "bangalore", "bhopal", 
+            "bhubaneswar", "chennai", "coimbatore", "coorg", "darjeeling", "delhi", "gangtok", 
+            "goa", "gokarna", "guwahati", "hampi", "hyderabad", "indore", "jaipur", "jaisalmer", 
+            "jammu", "jim corbett", "jodhpur", "kanyakumari", "kanpur", "kaziranga", "kochi", 
+            "kodaikanal", "kolkata", "leh", "lonavala", "lucknow", "madurai", "mahabaleshwar", 
+            "manali", "mumbai", "munnar", "mussoorie", "mysore", "nagpur", "nainital", "nashik", 
+            "ooty", "patna", "pondicherry", "pune", "puri", "rameswaram", "ranthambore", 
+            "rishikesh", "shillong", "shimla", "srinagar", "sundarbans", "surat", "swaraj dweep", 
+            "thiruvananthapuram", "tirupati", "udaipur", "vadodara", "varanasi", "visakhapatnam"
+        ];
+
+        const CITIES_AUTOCOMPLETE = AVAILABLE_CITIES.map(city => city.charAt(0).toUpperCase() + city.slice(1)).sort();
 
         const STATE_MAPPING = {
-            "rajasthan": ["jaipur", "udaipur", "jaisalmer", "jodhpur", "ranthambore"],
-            "kerala": ["munnar", "alleppey", "kochi", "thiruvananthapuram"],
-            "himachal pradesh": ["manali", "shimla"],
-            "uttarakhand": ["rishikesh", "nainital", "mussoorie", "jim corbett"],
-            "karnataka": ["bangalore", "coorg", "mysore", "hampi", "gokarna"],
-            "maharashtra": ["mumbai", "pune", "lonavala", "mahabaleshwar", "aurangabad", "nashik", "nagpur"],
-            "goa": ["goa"],
-            "tamil nadu": ["chennai", "ooty", "kodaikanal", "madurai", "rameswaram", "kanyakumari", "coimbatore"],
-            "uttar pradesh": ["agra", "varanasi", "lucknow", "kanpur", "prayagraj"],
-            "west bengal": ["kolkata", "darjeeling", "sundarbans"],
-            "gujarat": ["ahmedabad", "surat", "vadodara"],
-            "madhya pradesh": ["bhopal", "indore"],
-            "odisha": ["bhubaneswar", "puri"],
-            "punjab": ["amritsar"],
-            "assam": ["guwahati", "kaziranga"],
-            "telangana": ["hyderabad"],
-            "andhra pradesh": ["tirupati", "visakhapatnam"],
-            "jammu & kashmir": ["srinagar", "jammu"],
-            "ladakh": ["leh"],
-            "sikkim": ["gangtok"],
-            "meghalaya": ["shillong"],
-            "bihar": ["patna"],
-            "puducherry": ["pondicherry"],
-            "andaman & nicobar": ["swaraj dweep"]
-        };
-
-        const CITY_IMAGES = {
-            "agra": "https://images.unsplash.com/photo-1564507592333-c60657eea523?q=80&w=1920",
-            "jaipur": "https://images.unsplash.com/photo-1477587458883-47145ed94245?q=80&w=1920",
-            "goa": "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?q=80&w=1920",
-            "udaipur": "https://images.unsplash.com/photo-1615836245337-f5b9b2303f10?q=80&w=1920",
-            "varanasi": "https://images.unsplash.com/photo-1561361513-2d000a50f0dc?q=80&w=1920",
-            "manali": "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?q=80&w=1920",
-            "shimla": "https://images.unsplash.com/photo-1536295243470-d7cba4efab72?q=80&w=1920",
-            "delhi": "https://images.unsplash.com/photo-1587474265402-9e7926e8d658?q=80&w=1920",
-            "mumbai": "https://images.unsplash.com/photo-1566552881560-0be862a7c445?q=80&w=1920",
-            "rishikesh": "https://images.unsplash.com/photo-1596021688661-331294895d02?q=80&w=1920",
-            "leh": "https://images.unsplash.com/photo-1581793745862-99fde7fa73d2?q=80&w=1920",
-            "mysore": "https://images.unsplash.com/photo-1600612292802-3b7908b63480?q=80&w=1920",
-            "coorg": "https://images.unsplash.com/photo-1593693397690-362cb9666fc2?q=80&w=1920",
-            "jaisalmer": "https://images.unsplash.com/photo-1516483638261-f4dbaf036963?q=80&w=1920",
-            "gokarna": "https://images.unsplash.com/photo-1614531341773-3e97c745a073?q=80&w=1920",
-            "swaraj dweep": "https://images.unsplash.com/photo-1589330273594-fade1ee91647?q=80&w=1920",
-            "jim corbett": "https://images.unsplash.com/photo-1541414779316-956a5084c0d4?q=80&w=1920",
-            "kolkata": "https://images.unsplash.com/photo-1558431382-27e30314225d?q=80&w=1920",
-            "bangalore": "https://images.unsplash.com/photo-1596176530529-78163a4f7af2?q=80&w=1920",
-            "hyderabad": "https://images.unsplash.com/photo-1574109156653-56488c40669b?q=80&w=1920",
-            "chennai": "https://images.unsplash.com/photo-1582510003544-bea4e1e9d85f?q=80&w=1920",
-            "pune": "https://images.unsplash.com/photo-1627909930773-67c4c772be48?q=80&w=1920",
-            "srinagar": "https://images.unsplash.com/photo-1598091383021-15ddea10925d?q=80&w=1920",
-            "munnar": "https://images.unsplash.com/photo-1616388969544-70e28609b7e5?q=80&w=1920",
-            "prayagraj": "https://images.unsplash.com/photo-1566839332-95f2479e0019?q=80&w=1920"
-        };
-        const DEFAULT_IMAGE = "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80";
-
-        // New Fallback Images
-        const FALLBACK_IMAGES = {
-            'beach': "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=800",
-            'hill': "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=800",
-            'history': "https://images.unsplash.com/photo-1477587458883-47145ed94245?q=80&w=800", // Jaipur Fort for History
-            'nature': "https://images.unsplash.com/photo-1580566522708-135a7804843f?q=80&w=800"  // Sundarbans for Nature
+            "Rajasthan": ["Jaipur", "Udaipur", "Jaisalmer", "Jodhpur"],
+            "Kerala": ["Munnar", "Alleppey", "Kochi", "Thiruvananthapuram", "Wayanad", "Varkala"],
+            "Himachal Pradesh": ["Manali", "Shimla"],
+            "Uttarakhand": ["Rishikesh", "Nainital", "Mussoorie", "Jim Corbett", "Haridwar"],
+            "Karnataka": ["Bangalore", "Coorg", "Mysore", "Hampi", "Gokarna"],
+            "Maharashtra": ["Mumbai", "Pune", "Lonavala", "Mahabaleshwar", "Aurangabad", "Nashik", "Nagpur"],
+            "Goa": ["Goa"],
+            "Tamil Nadu": ["Chennai", "Ooty", "Kodaikanal", "Madurai", "Rameswaram", "Kanyakumari", "Coimbatore"],
+            "Uttar Pradesh": ["Agra", "Varanasi", "Lucknow", "Kanpur"],
+            "West Bengal": ["Kolkata", "Darjeeling", "Sundarbans"],
+            "Gujarat": ["Ahmedabad", "Surat", "Vadodara"],
+            "Madhya Pradesh": ["Bhopal", "Indore"],
+            "Odisha": ["Bhubaneswar", "Puri"],
+            "Punjab": ["Amritsar"],
+            "Assam": ["Guwahati", "Kaziranga"],
+            "Telangana": ["Hyderabad"],
+            "Andhra Pradesh": ["Tirupati", "Visakhapatnam"],
+            "Jammu & Kashmir": ["Srinagar", "Jammu"],
+            "Ladakh": ["Leh"],
+            "Sikkim": ["Gangtok"],
+            "Meghalaya": ["Shillong"],
+            "Bihar": ["Patna"],
+            "Puducherry": ["Pondicherry"],
+            "Andaman & Nicobar": ["Swaraj Dweep"]
         };
 
         const CATEGORIES = {
-            'history': ['jaipur', 'udaipur', 'hampi', 'varanasi', 'agra', 'mysore', 'prayagraj'],
-            'beach': ['goa', 'gokarna', 'swaraj dweep', 'pondicherry', 'puri'],
-            'hill': ['manali', 'shimla', 'munnar', 'leh', 'ooty', 'darjeeling'],
-            'nature': ['jim corbett', 'kaziranga', 'alleppey', 'coorg', 'ranthambore']
+            'history': ['Jaipur', 'Udaipur', 'Hampi', 'Agra', 'Mysore', 'Jaisalmer', 'Aurangabad', 'Delhi'],
+            'spiritual': ['Varanasi', 'Rishikesh', 'Tirupati', 'Puri', 'Amritsar', 'Rameswaram', 'Haridwar', 'Madurai'],
+            'island': ['Swaraj Dweep', 'Rameswaram', 'Kochi'],
+            'beach': ['Goa', 'Gokarna', 'Pondicherry', 'Varkala', 'Puri', 'Kanyakumari'],
+            'hill': ['Manali', 'Shimla', 'Munnar', 'Leh', 'Ooty', 'Darjeeling', 'Nainital', 'Gangtok', 'Shillong', 'Mussoorie'],
+            'nature': ['Jim Corbett', 'Kaziranga', 'Alleppey', 'Coorg', 'Wayanad', 'Ranthambore', 'Sundarbans']
+        };
+
+        // STABLE IMAGE MAP - ALL CITIES MAPPED TO HIGH-QUALITY IMAGES
+        const CITY_IMAGES = {
+            // Spiritual (Ganga Aarti & Lamps Style)
+            "varanasi": "https://images.unsplash.com/photo-1561361513-2d000a50f0dc?auto=format&fit=crop&w=800&q=80", 
+            "rishikesh": "https://images.unsplash.com/photo-1518182170546-0766ce6fec56?auto=format&fit=crop&w=800&q=80", 
+            "haridwar": "https://images.unsplash.com/photo-1596564633789-985d7107f240?auto=format&fit=crop&w=800&q=80", 
+            "tirupati": "https://images.unsplash.com/photo-1643265814521-83c3175024b3?auto=format&fit=crop&w=800&q=80", 
+            "puri": "https://images.unsplash.com/photo-1574526671043-4a307406a445?auto=format&fit=crop&w=800&q=80", 
+            "amritsar": "https://images.unsplash.com/photo-1514222134-b57cbb8ce073?auto=format&fit=crop&w=800&q=80", 
+            "rameswaram": "https://images.unsplash.com/photo-1624545086392-4f35f29d10e6?auto=format&fit=crop&w=800&q=80", 
+
+            // Hills (Misty/Moody Style)
+            "leh": "https://images.unsplash.com/photo-1581793745862-99fde7fa73d2?auto=format&fit=crop&w=800&q=80", 
+            "ooty": "https://images.unsplash.com/photo-1559846305-654cb7863158?auto=format&fit=crop&w=800&q=80", 
+            "darjeeling": "https://images.unsplash.com/photo-1544634076-a90160bc24d8?auto=format&fit=crop&w=800&q=80", 
+            "manali": "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&w=800&q=80", 
+            "shimla": "https://images.unsplash.com/photo-1562649363-233f20815462?auto=format&fit=crop&w=800&q=80", 
+            "munnar": "https://images.unsplash.com/photo-1596005554384-d293674c91d7?auto=format&fit=crop&w=800&q=80", 
+            "nainital": "https://images.unsplash.com/photo-1569344427508-3a158b4f1784?auto=format&fit=crop&w=800&q=80", 
+
+            // Beach/Island (Sunset/Dark Water Style)
+            "gokarna": "https://images.unsplash.com/photo-1643194079860-264149022064?auto=format&fit=crop&w=800&q=80", 
+            "pondicherry": "https://images.unsplash.com/photo-1619696570760-466d3330663f?auto=format&fit=crop&w=800&q=80", 
+            "varkala": "https://images.unsplash.com/photo-1652614922159-83c3175024b3?auto=format&fit=crop&w=800&q=80", 
+            "goa": "https://images.unsplash.com/photo-1615529328331-f8e5d2951f54?auto=format&fit=crop&w=800&q=80", 
+            "swaraj dweep": "https://images.unsplash.com/photo-1589330273594-fade1ee91647?auto=format&fit=crop&w=800&q=80", 
+
+            // Heritage/History (Dark/Gold Architecture)
+            "agra": "https://images.unsplash.com/photo-1548013146-72479768bada?auto=format&fit=crop&w=800&q=80", 
+            "delhi": "https://images.unsplash.com/photo-1587474265402-9e7926e8d658?auto=format&fit=crop&w=800&q=80", 
+            "jaipur": "https://images.unsplash.com/photo-1477587458883-47145ed94245?auto=format&fit=crop&w=800&q=80", 
+            "udaipur": "https://images.unsplash.com/photo-1595262369688-660c3866c117?auto=format&fit=crop&w=800&q=80", 
+            "jaisalmer": "https://images.unsplash.com/photo-1516483638261-f4dbaf036963?auto=format&fit=crop&w=800&q=80", 
+            "jodhpur": "https://images.unsplash.com/photo-1534234828563-02511c798782?auto=format&fit=crop&w=800&q=80", 
+            "hampi": "https://images.unsplash.com/photo-1620766182966-c6eb33251735?auto=format&fit=crop&w=800&q=80", 
+            "mysore": "https://images.unsplash.com/photo-1600612292802-3b7908b63480?auto=format&fit=crop&w=800&q=80", 
+
+            // Metro/Others
+            "mumbai": "https://images.unsplash.com/photo-1566552881560-0be862a7c445?auto=format&fit=crop&w=800&q=80",
+            "bangalore": "https://images.unsplash.com/photo-1596176530529-78163a4f7af2?auto=format&fit=crop&w=800&q=80",
+            "kolkata": "https://images.unsplash.com/photo-1558431382-27e30314225d?auto=format&fit=crop&w=800&q=80"
         };
 
         const dataCache = {};
@@ -344,79 +296,58 @@
         const categoryFilters = document.getElementById('categoryFilters');
         const loadingIndicator = document.getElementById('loadingIndicator');
         const cityBackground = document.getElementById('cityBackground');
-        const cityDirectory = document.getElementById('cityDirectory');
-        const directoryGrid = document.getElementById('directoryGrid');
 
         // Initialize
         document.addEventListener('DOMContentLoaded', () => {
-            lucide.createIcons();
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
             renderDefaultFeatured();
-            // Directory is rendered when requested (not here to avoid early DOM manipulation)
         });
-
-        // --- DIRECTORY LOGIC ---
-        function renderDirectory() {
-            // Dynamic Grid Generation on Click
-            if(directoryGrid.innerHTML === "") {
-                directoryGrid.innerHTML = CITIES_AUTOCOMPLETE.map(city => 
-                    `<div onclick="loadCity('${city}')" class="hover:text-gold cursor-pointer transition-colors p-2 bg-slate-800/50 rounded hover:bg-slate-800 border border-slate-700/50 hover:border-gold/30 flex items-center gap-2">
-                        <i data-lucide="map-pin" class="w-3 h-3 text-gold opacity-50"></i> ${city}
-                    </div>`
-                ).join('');
-                lucide.createIcons({ root: directoryGrid });
-            }
-        }
-
-        function toggleCityDirectory() {
-            renderDirectory(); // Ensure it's built
-            if (cityDirectory.classList.contains('hidden')) {
-                cityDirectory.classList.remove('hidden');
-                setTimeout(() => {
-                    cityDirectory.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }, 100);
-            } else {
-                cityDirectory.classList.add('hidden');
-            }
-        }
 
         // --- SEARCH LOGIC ---
         function handleSearch(event) {
-            event.preventDefault(); 
+            event.preventDefault(); // Stop form submission
             const val = cityInput.value.toLowerCase().trim();
             if(!val) return;
 
+            // Check if it matches a known State first
             const stateMatch = Object.keys(STATE_MAPPING).find(state => state.toLowerCase() === val);
             
             if (stateMatch) {
                 loadState(stateMatch);
             } else {
+                // Default to city search
                 loadCity(val);
             }
             searchSuggestions.classList.add('hidden');
         }
 
+        // --- API HANDLER ---
         async function fetchCityData(cityName) {
             cityName = cityName.trim().toLowerCase();
             
             if (dataCache[cityName]) return dataCache[cityName];
-            if (LOCAL_DB[cityName]) return LOCAL_DB[cityName];
 
             loadingIndicator.classList.remove('hidden');
             clearBtn.classList.add('hidden');
 
             try {
                 const response = await fetch(`${API_URL}?city=${encodeURIComponent(cityName)}`);
+                if (!response.ok) throw new Error("Network response was not ok");
+                
                 const data = await response.json();
                 
                 loadingIndicator.classList.add('hidden');
                 clearBtn.classList.remove('hidden');
 
-                if (data.error) return null;
+                if (data.error || !data.city) return null;
 
                 dataCache[cityName] = data;
                 return data;
 
             } catch (error) {
+                console.warn("API Connection Failed or City Not Found.", error);
                 loadingIndicator.classList.add('hidden');
                 clearBtn.classList.remove('hidden');
                 return null; 
@@ -424,23 +355,22 @@
         }
 
         async function loadCity(cityName) {
-            cityDirectory.classList.add('hidden');
             const data = await fetchCityData(cityName);
             
             if (!data) {
-                alert("Destination not found. Try checking the spelling or browse our list.");
+                alert("Destination not found in our database or connection issue.");
                 return;
             }
 
+            // UI Reset
             searchSuggestions.classList.add('hidden');
             cityInput.value = data.city; 
             
             heroHeader.classList.add('hidden');
-            categoryFilters.classList.add('hidden');
             featuredGrid.classList.add('hidden');
-            cityDirectory.classList.add('hidden');
             resultView.classList.remove('hidden');
 
+            // Scroll to top of content
             window.scrollTo({ top: 0, behavior: 'auto' });
 
             renderCityDetail(data);
@@ -459,7 +389,7 @@
             featuredGrid.innerHTML = `
                 <div class="col-span-full text-center text-gold py-20 fade-in">
                     <div class="loader mx-auto mb-4"></div>
-                    <span class="text-sm tracking-widest uppercase">Exploring ${stateName}...</span>
+                    <span class="text-sm tracking-widest uppercase">Fetching best spots in ${stateName}...</span>
                 </div>
             `;
 
@@ -475,6 +405,14 @@
                 gridHTML += createGridCard(data, stateName);
             });
 
+            if(count === 0) {
+                 featuredGrid.innerHTML = `
+                <div class="col-span-full text-center text-gray-400 py-20 fade-in">
+                    <p>Unable to load destinations for ${stateName} at the moment.</p>
+                </div>`;
+                return;
+            }
+
             featuredGrid.innerHTML = `
                 <div class="col-span-full mb-4 fade-in text-center border-b border-white/5 pb-8 pt-4">
                     <h2 class="text-4xl serif text-white capitalize mb-2">Destinations in <span class="text-gold">${stateName}</span></h2>
@@ -482,47 +420,27 @@
                 </div>
                 ${gridHTML}
             `;
-            lucide.createIcons({ root: featuredGrid });
+            if (typeof lucide !== 'undefined') lucide.createIcons({ root: featuredGrid });
             featuredGrid.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
         function createGridCard(data, tag) {
-            // Image Fallback Logic for Grid
-            let bgImage = CITY_IMAGES[data.city.toLowerCase()];
-            if (!bgImage) {
-                 // Generic Fallbacks based on tags
-                 const lowerTag = tag.toLowerCase();
-                 if(lowerTag.includes('beach')) bgImage = FALLBACK_IMAGES['beach'];
-                 else if(lowerTag.includes('hill')) bgImage = FALLBACK_IMAGES['hill'];
-                 else if(lowerTag.includes('history')) bgImage = FALLBACK_IMAGES['history'];
-                 else if(lowerTag.includes('nature')) bgImage = FALLBACK_IMAGES['nature'];
-                 else bgImage = DEFAULT_IMAGE;
-            }
-
+            // Images are removed from the card layout as requested
+            // We still use CITY_IMAGES for the background when the user clicks the card
             return `
-            <div onclick="loadCity('${data.city}')" class="glass-panel p-6 rounded-2xl cursor-pointer card-hover group relative overflow-hidden fade-in h-64 flex flex-col justify-end bg-cover bg-center" style="background-image: url('${bgImage}');">
-                <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900/60 to-transparent"></div>
+            <div onclick="loadCity('${data.city}')" class="simple-card relative p-8 rounded-2xl border border-white/10 bg-white/5 hover:bg-white/10 cursor-pointer group fade-in h-[250px] flex flex-col justify-end">
                 <div class="relative z-10">
-                    <div class="flex justify-between items-end mb-1">
-                        <h3 class="text-2xl serif text-white group-hover:text-gold transition-colors capitalize">${data.city}</h3>
-                         <span class="text-[10px] font-bold text-gray-300 uppercase tracking-widest bg-black/50 px-2 py-1 rounded backdrop-blur-sm">${tag}</span>
-                    </div>
-                    <p class="text-sm text-gray-300 italic line-clamp-1">"${data.nickname}"</p>
+                    <span class="inline-block px-3 py-1 mb-3 text-[10px] font-bold tracking-widest text-black bg-gold rounded-full uppercase">${tag}</span>
+                    <h3 class="text-3xl serif text-white mb-2 group-hover:text-gold transition-colors capitalize">${data.city}</h3>
+                    <p class="text-sm text-gray-300 italic mb-3">"${data.nickname}"</p>
+                    <p class="text-[10px] text-gray-400 font-mono tracking-wide">Approx ${data.estimated_cost.total}</p>
                 </div>
             </div>`;
         }
 
         function renderCityDetail(data) {
-            // Image Logic for Detail View
             let bgUrl = CITY_IMAGES[data.city.toLowerCase()];
-            if (!bgUrl) {
-                 const keywords = data.famous_for.toLowerCase();
-                 if(keywords.includes('beach')) bgUrl = FALLBACK_IMAGES['beach'];
-                 else if(keywords.includes('hill') || keywords.includes('snow')) bgUrl = FALLBACK_IMAGES['hill'];
-                 else if(keywords.includes('fort') || keywords.includes('temple') || keywords.includes('history')) bgUrl = FALLBACK_IMAGES['history'];
-                 else if(keywords.includes('nature') || keywords.includes('wildlife')) bgUrl = FALLBACK_IMAGES['nature'];
-                 else bgUrl = DEFAULT_IMAGE;
-            }
+            if (!bgUrl) bgUrl = DEFAULT_IMAGE;
 
             cityBackground.style.backgroundImage = `url('${bgUrl}')`;
             cityBackground.style.opacity = '1';
@@ -614,13 +532,49 @@
                     </div>
                 </div>
             `;
-            lucide.createIcons({ root: resultView });
+            if (typeof lucide !== 'undefined') lucide.createIcons({ root: resultView });
+        }
+
+        async function loadCategory(tag) {
+            const citiesToLoad = CATEGORIES[tag];
+            resetAppViewForGrid();
+            
+            featuredGrid.innerHTML = `<div class="col-span-full text-center text-gold py-20 fade-in"><div class="loader mx-auto mb-4"></div><span class="text-sm tracking-widest uppercase">Fetching ${tag} destinations...</span></div>`;
+
+            const promises = citiesToLoad.map(city => fetchCityData(city));
+            const results = await Promise.all(promises);
+
+            let gridHTML = "";
+            let count = 0;
+
+            results.forEach(data => {
+                if(!data) return;
+                count++;
+                gridHTML += createGridCard(data, tag);
+            });
+
+            if(count === 0) {
+                 featuredGrid.innerHTML = `
+                <div class="col-span-full text-center text-gray-400 py-20 fade-in">
+                    <p>Unable to load ${tag} destinations at the moment.</p>
+                </div>`;
+                return;
+            }
+
+            featuredGrid.innerHTML = `
+                <div class="col-span-full mb-4 fade-in text-center border-b border-white/5 pb-8 pt-4">
+                    <h2 class="text-4xl serif text-white capitalize mb-2">Curated <span class="text-gold">${tag}</span> Collection</h2>
+                    <p class="text-sm text-gray-400 tracking-widest uppercase">Found ${count} destinations</p>
+                </div>
+                ${gridHTML}
+            `;
+            if (typeof lucide !== 'undefined') lucide.createIcons({ root: featuredGrid });
+            featuredGrid.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
         function resetAppViewForGrid() {
             resultView.classList.add('hidden');
             searchSuggestions.classList.add('hidden');
-            cityDirectory.classList.add('hidden');
             heroHeader.classList.add('hidden');
             featuredGrid.classList.remove('hidden');
         }
@@ -661,7 +615,7 @@
             if (html) {
                 searchSuggestions.innerHTML = html;
                 searchSuggestions.classList.remove('hidden');
-                lucide.createIcons({ root: searchSuggestions });
+                if (typeof lucide !== 'undefined') lucide.createIcons({ root: searchSuggestions });
             } else {
                 searchSuggestions.classList.add('hidden');
             }
@@ -673,12 +627,10 @@
             clearBtn.classList.add('hidden');
             searchSuggestions.classList.add('hidden');
             resultView.classList.add('hidden');
-            cityDirectory.classList.add('hidden');
             resultView.innerHTML = '';
             cityBackground.style.opacity = '0';
             
             heroHeader.classList.remove('hidden');
-            categoryFilters.classList.remove('hidden');
             featuredGrid.classList.remove('hidden');
             
             heroHeader.classList.remove('fade-in');
@@ -689,38 +641,37 @@
         }
 
         function renderDefaultFeatured() {
+            // Render the top 3 high-impact luxury destinations WITHOUT images inside the cards
             featuredGrid.innerHTML = `
-                <div onclick="loadCity('udaipur')" class="glass-panel p-8 rounded-2xl cursor-pointer card-hover group relative overflow-hidden h-96 bg-cover bg-center flex flex-col justify-end" style="background-image: url('${CITY_IMAGES['udaipur']}');">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
+                <div onclick="loadCity('udaipur')" class="simple-card relative p-8 rounded-2xl border border-white/10 bg-white/5 hover:bg-white/10 cursor-pointer group fade-in h-[250px] flex flex-col justify-end">
                     <div class="relative z-10">
-                        <span class="text-[10px] font-bold tracking-widest text-gold uppercase border border-gold/30 px-3 py-1 rounded-full mb-4 inline-block bg-black/50 backdrop-blur-sm">Royal Heritage</span>
-                        <h3 class="text-3xl serif text-white mb-2">Udaipur</h3>
-                        <p class="text-sm text-gray-300 italic mb-4">"The City of Lakes"</p>
-                        <span class="text-xs text-gray-400 flex items-center"><i data-lucide="indian-rupee" class="w-3 h-3 mr-1"></i> Approx 2500/day</span>
+                        <span class="inline-block px-3 py-1 mb-3 text-[10px] font-bold tracking-widest text-black bg-gold rounded-full uppercase">Royal Heritage</span>
+                        <h3 class="text-3xl serif text-white mb-2 group-hover:text-gold transition-colors">Udaipur</h3>
+                        <p class="text-sm text-gray-300 italic mb-3">"The City of Lakes"</p>
+                        <p class="text-xs text-gray-400 font-mono tracking-wide">Approx ₹2500/day</p>
                     </div>
                 </div>
-                <div onclick="loadCity('goa')" class="glass-panel p-8 rounded-2xl cursor-pointer card-hover group relative overflow-hidden h-96 bg-cover bg-center flex flex-col justify-end" style="background-image: url('${CITY_IMAGES['goa']}');">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
+
+                <div onclick="loadCity('munnar')" class="simple-card relative p-8 rounded-2xl border border-white/10 bg-white/5 hover:bg-white/10 cursor-pointer group fade-in h-[250px] flex flex-col justify-end">
                     <div class="relative z-10">
-                        <span class="text-[10px] font-bold tracking-widest text-cyan-400 uppercase border border-cyan-400/30 px-3 py-1 rounded-full mb-4 inline-block bg-black/50 backdrop-blur-sm">Beach & Party</span>
-                        <h3 class="text-3xl serif text-white mb-2">Goa</h3>
-                        <p class="text-sm text-gray-300 italic mb-4">"Pearl of the Orient"</p>
-                        <span class="text-xs text-gray-400 flex items-center"><i data-lucide="indian-rupee" class="w-3 h-3 mr-1"></i> Approx 3500/day</span>
+                        <span class="inline-block px-3 py-1 mb-3 text-[10px] font-bold tracking-widest text-black bg-emerald-400 rounded-full uppercase">Nature Escape</span>
+                        <h3 class="text-3xl serif text-white mb-2 group-hover:text-emerald-400 transition-colors">Munnar</h3>
+                        <p class="text-sm text-gray-300 italic mb-3">"Kashmir of South India"</p>
+                        <p class="text-xs text-gray-400 font-mono tracking-wide">Approx ₹2000/day</p>
                     </div>
                 </div>
-                <div onclick="loadCity('varanasi')" class="glass-panel p-8 rounded-2xl cursor-pointer card-hover group relative overflow-hidden h-96 bg-cover bg-center flex flex-col justify-end" style="background-image: url('${CITY_IMAGES['varanasi']}');">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
+
+                <div onclick="loadCity('varanasi')" class="simple-card relative p-8 rounded-2xl border border-white/10 bg-white/5 hover:bg-white/10 cursor-pointer group fade-in h-[250px] flex flex-col justify-end">
                     <div class="relative z-10">
-                        <span class="text-[10px] font-bold tracking-widest text-orange-400 uppercase border border-orange-400/30 px-3 py-1 rounded-full mb-4 inline-block bg-black/50 backdrop-blur-sm">Spiritual</span>
-                        <h3 class="text-3xl serif text-white mb-2">Varanasi</h3>
-                        <p class="text-sm text-gray-300 italic mb-4">"Spiritual Capital of India"</p>
-                        <span class="text-xs text-gray-400 flex items-center"><i data-lucide="indian-rupee" class="w-3 h-3 mr-1"></i> Approx 2200/day</span>
+                        <span class="inline-block px-3 py-1 mb-3 text-[10px] font-bold tracking-widest text-black bg-orange-400 rounded-full uppercase">Spiritual</span>
+                        <h3 class="text-3xl serif text-white mb-2 group-hover:text-orange-400 transition-colors">Varanasi</h3>
+                        <p class="text-sm text-gray-300 italic mb-3">"The City of Lights"</p>
+                        <p class="text-xs text-gray-400 font-mono tracking-wide">Approx ₹2200/day</p>
                     </div>
                 </div>
             `;
-            lucide.createIcons({ root: featuredGrid });
+            if (typeof lucide !== 'undefined') lucide.createIcons({ root: featuredGrid });
         }
     </script>
 </body>
 </html>
-
