@@ -34,8 +34,7 @@
 
     .container {
         background: rgba(255, 255, 255, 0.15);
-        /* FIX: Vendor prefix comes first */
-        -webkit-backdrop-filter: blur(12px); 
+        -webkit-backdrop-filter: blur(12px);
         backdrop-filter: blur(12px);
         border: 1px solid rgba(255, 255, 255, 0.2);
         padding: 40px 30px;
@@ -55,9 +54,8 @@
         font-size: 2.5em;
         margin-bottom: 10px;
         background: -webkit-linear-gradient(#ffecd2, #fcb69f);
-        /* FIX: Added standard property for compatibility */
         -webkit-background-clip: text;
-        background-clip: text; 
+        background-clip: text;
         -webkit-text-fill-color: transparent;
         text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
     }
@@ -114,11 +112,10 @@
         box-shadow: 0 6px 20px rgba(0,0,0,0.3);
     }
 
-    /* Result Section Styling */
     .result {
         text-align: left;
         margin-top: 20px;
-        display: none; 
+        display: none;
         animation: fadeIn 0.5s ease-in-out;
     }
 
@@ -138,6 +135,7 @@
         font-size: 2.2em;
         color: #fff;
         letter-spacing: 1px;
+        text-transform: capitalize;
     }
 
     .header-section h3 {
@@ -175,7 +173,6 @@
         line-height: 1.4;
     }
 
-    /* Cost Table Style */
     .cost-grid {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
@@ -200,156 +197,224 @@
         margin-right: 5px;
         margin-bottom: 5px;
     }
-
-    /* Loader */
-    .loader {
-        border: 4px solid rgba(255,255,255,0.3);
-        border-top: 4px solid #fff;
-        border-radius: 50%;
-        width: 40px;
-        height: 40px;
-        animation: spin 1s linear infinite;
-        margin: 20px auto;
-        display: none;
-    }
-
-    @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-    }
-
 </style>
 </head>
 <body>
 
 <div class="container">
     <h1>Travel Buddy ✈️</h1>
-    <p class="subtitle">Discover your next adventure with detailed insights.</p>
+    <p class="subtitle">Explore 168+ Destinations in India!</p>
     
     <div class="input-group">
-        <input type="text" id="cityInput" placeholder="Enter destination (e.g., Goa, Manali)...">
+        <input type="text" id="cityInput" placeholder="Enter destination (e.g., Manali, Goa)...">
     </div>
     
     <button onclick="getTravelData()">Explore Now</button>
-
-    <div class="loader" id="loader"></div>
     <div class="result" id="result"></div>
 </div>
 
 <script>
-async function getTravelData() {
+// --- LOCAL DATABASE START ---
+const travelData = {
+    "delhi": { "nickname": "Dilwalo Ki Dilli", "famous_for": "History, Street Food", "best_places": ["India Gate", "Red Fort", "Qutub Minar"], "food": ["Chole Bhature", "Chaat"], "activities": ["Heritage Walk", "Shopping"], "estimated_cost": {"total": "₹1500-2500", "stay": "₹800-1500", "food": "₹400-700", "activity": "₹300-500"}, "best_time": "Oct-Mar", "climate": "Extreme", "season": {"summer": "Hot", "winter": "Cold", "monsoon": "Rainy"}, "market": ["Sarojini Nagar"] },
+    "mumbai": { "nickname": "City of Dreams", "famous_for": "Bollywood, Marine Drive", "best_places": ["Gateway of India", "Juhu Beach"], "food": ["Vada Pav", "Pav Bhaji"], "activities": ["Nightlife", "Beach Walk"], "estimated_cost": {"total": "₹2000-3500", "stay": "₹1200-2500", "food": "₹500-1000", "activity": "₹300-500"}, "best_time": "Nov-Feb", "climate": "Humid", "season": {"summer": "Hot", "winter": "Pleasant", "monsoon": "Heavy Rain"}, "market": ["Colaba Causeway"] },
+    "bengaluru": { "nickname": "Silicon Valley", "famous_for": "IT, Pubs, Gardens", "best_places": ["Cubbon Park", "Lalbagh"], "food": ["Dosa", "Filter Coffee"], "activities": ["Pub Hopping", "Tech Tour"], "estimated_cost": {"total": "₹1500-2500", "stay": "₹800-1500", "food": "₹400-700", "activity": "₹300-500"}, "best_time": "All Year", "climate": "Moderate", "season": {"summer": "Warm", "winter": "Cool", "monsoon": "Rainy"}, "market": ["Brigade Road"] },
+    "kolkata": { "nickname": "City of Joy", "famous_for": "Culture, Sweets", "best_places": ["Victoria Memorial", "Howrah Bridge"], "food": ["Rosogolla", "Kathi Roll"], "activities": ["Tram Ride", "River Cruise"], "estimated_cost": {"total": "₹1200-2000", "stay": "₹600-1200", "food": "₹400-600", "activity": "₹200-400"}, "best_time": "Oct-Mar", "climate": "Humid", "season": {"summer": "Hot", "winter": "Cool", "monsoon": "Heavy Rain"}, "market": ["New Market"] },
+    "chennai": { "nickname": "Detroit of India", "famous_for": "Temples, Beaches", "best_places": ["Marina Beach", "Kapaleeshwarar"], "food": ["Idli", "Chettinad"], "activities": ["Beach Walk", "Temple Tour"], "estimated_cost": {"total": "₹1200-2000", "stay": "₹700-1200", "food": "₹300-600", "activity": "₹200-400"}, "best_time": "Nov-Feb", "climate": "Hot/Humid", "season": {"summer": "Hot", "winter": "Pleasant", "monsoon": "Rainy"}, "market": ["T. Nagar"] },
+    "hyderabad": { "nickname": "City of Pearls", "famous_for": "Biryani, Charminar", "best_places": ["Charminar", "Golconda Fort"], "food": ["Biryani", "Haleem"], "activities": ["Heritage Walk", "Shopping"], "estimated_cost": {"total": "₹1200-2200", "stay": "₹700-1200", "food": "₹400-700", "activity": "₹200-400"}, "best_time": "Oct-Mar", "climate": "Hot", "season": {"summer": "Hot", "winter": "Pleasant", "monsoon": "Rainy"}, "market": ["Laad Bazaar"] },
+    "pune": { "nickname": "Oxford of East", "famous_for": "Education, Forts", "best_places": ["Shaniwar Wada", "Sinhagad"], "food": ["Misal Pav", "Bakarwadi"], "activities": ["Trekking", "Cafe Hopping"], "estimated_cost": {"total": "₹1200-2200", "stay": "₹700-1200", "food": "₹300-600", "activity": "₹200-400"}, "best_time": "Oct-Mar", "climate": "Pleasant", "season": {"summer": "Hot", "winter": "Cool", "monsoon": "Rainy"}, "market": ["FC Road"] },
+    "goa": { "nickname": "Pearl of Orient", "famous_for": "Beaches, Party", "best_places": ["Baga Beach", "Basilica"], "food": ["Vindaloo", "Seafood"], "activities": ["Water Sports", "Nightlife"], "estimated_cost": {"total": "₹2500-4500", "stay": "₹1000-2000", "food": "₹800-1500", "activity": "₹700-1500"}, "best_time": "Oct-Mar", "climate": "Tropical", "season": {"summer": "Hot", "winter": "Pleasant", "monsoon": "Rainy"}, "market": ["Anjuna Flea"] },
+    "jaipur": { "nickname": "Pink City", "famous_for": "Forts", "best_places": ["Hawa Mahal", "Amber Fort"], "food": ["Dal Baati", "Ghevar"], "activities": ["Fort Tour", "Shopping"], "estimated_cost": {"total": "₹1500-2500", "stay": "₹800-1500", "food": "₹400-700", "activity": "₹300-500"}, "best_time": "Oct-Mar", "climate": "Hot", "season": {"summer": "Very Hot", "winter": "Pleasant", "monsoon": "Low Rain"}, "market": ["Bapu Bazaar"] },
+    "agra": { "nickname": "Taj City", "famous_for": "Taj Mahal", "best_places": ["Taj Mahal", "Agra Fort"], "food": ["Petha", "Mughlai"], "activities": ["Monument View", "Shopping"], "estimated_cost": {"total": "₹1500-3000", "stay": "₹800-1500", "food": "₹300-600", "activity": "₹500-1000"}, "best_time": "Oct-Mar", "climate": "Semi-arid", "season": {"summer": "Hot", "winter": "Foggy", "monsoon": "Moderate"}, "market": ["Sadar Bazaar"] },
+    "manali": { "nickname": "Valley of Gods", "famous_for": "Snow, Adventure", "best_places": ["Solang Valley", "Hadimba Temple"], "food": ["Trout", "Siddu"], "activities": ["Skiing", "Paragliding"], "estimated_cost": {"total": "₹1500-3500", "stay": "₹800-1800", "food": "₹400-800", "activity": "₹500-1500"}, "best_time": "Oct-Jun", "climate": "Cold", "season": {"summer": "Pleasant", "winter": "Snow", "monsoon": "Rainy"}, "market": ["Mall Road"] },
+    "shimla": { "nickname": "Queen of Hills", "famous_for": "Colonial Charm", "best_places": ["Ridge", "Mall Road"], "food": ["Madra", "Chha Gosht"], "activities": ["Toy Train", "Walk"], "estimated_cost": {"total": "₹1500-3000", "stay": "₹1000-2000", "food": "₹400-800", "activity": "₹200-500"}, "best_time": "Mar-Jun", "climate": "Cool", "season": {"summer": "Pleasant", "winter": "Snow", "monsoon": "Misty"}, "market": ["Lakkar Bazaar"] },
+    "udaipur": { "nickname": "Lake City", "famous_for": "Lakes, Palaces", "best_places": ["City Palace", "Lake Pichola"], "food": ["Dal Baati", "Kachori"], "activities": ["Boating", "Sunset"], "estimated_cost": {"total": "₹2000-3500", "stay": "₹1000-2000", "food": "₹500-900", "activity": "₹500-800"}, "best_time": "Sep-Mar", "climate": "Semi-arid", "season": {"summer": "Hot", "winter": "Pleasant", "monsoon": "Light Rain"}, "market": ["Hathi Pol"] },
+    "varanasi": { "nickname": "Kashi", "famous_for": "Ghats, Spirituality", "best_places": ["Ghats", "Kashi Vishwanath"], "food": ["Lassi", "Paan"], "activities": ["Aarti", "Boat Ride"], "estimated_cost": {"total": "₹1000-2000", "stay": "₹500-1200", "food": "₹200-500", "activity": "₹200-400"}, "best_time": "Oct-Mar", "climate": "Subtropical", "season": {"summer": "Hot", "winter": "Cold", "monsoon": "Humid"}, "market": ["Godowlia"] },
+    "rishikesh": { "nickname": "Yoga Capital", "famous_for": "Rafting, Yoga", "best_places": ["Laxman Jhula", "Beatles Ashram"], "food": ["Veg Health Food"], "activities": ["Rafting", "Bungee"], "estimated_cost": {"total": "₹1500-3000", "stay": "₹500-1500", "food": "₹400-800", "activity": "₹500-1500"}, "best_time": "Sep-Jun", "climate": "Subtropical", "season": {"summer": "Hot", "winter": "Cool", "monsoon": "Rainy"}, "market": ["Tapovan"] },
+    "alleppey": { "nickname": "Venice of East", "famous_for": "Houseboats", "best_places": ["Backwaters", "Beach"], "food": ["Fish Curry"], "activities": ["Houseboat", "Canoe"], "estimated_cost": {"total": "₹3000-8000", "stay": "₹2000-6000", "food": "₹500-1000", "activity": "₹500-1000"}, "best_time": "Sep-Mar", "climate": "Tropical", "season": {"summer": "Humid", "winter": "Pleasant", "monsoon": "Rainy"}, "market": ["Canal Side"] },
+    "munnar": { "nickname": "Tea Garden", "famous_for": "Tea, Mist", "best_places": ["Tea Museum", "Mattupetty"], "food": ["Kerala Parotta"], "activities": ["Tea Walk", "Trek"], "estimated_cost": {"total": "₹1500-2500", "stay": "₹800-1500", "food": "₹300-600", "activity": "₹400-600"}, "best_time": "Sep-Mar", "climate": "Cool", "season": {"summer": "Mild", "winter": "Cold", "monsoon": "Heavy Rain"}, "market": ["Munnar Town"] },
+    "coorg": { "nickname": "Scotland of India", "famous_for": "Coffee", "best_places": ["Abbey Falls", "Dubare"], "food": ["Pork Curry", "Coffee"], "activities": ["Rafting", "Walk"], "estimated_cost": {"total": "₹1500-3000", "stay": "₹1000-2000", "food": "₹300-600", "activity": "₹300-600"}, "best_time": "Oct-Mar", "climate": "Pleasant", "season": {"summer": "Warm", "winter": "Cool", "monsoon": "Rainy"}, "market": ["Madikeri"] },
+    "leh": { "nickname": "High Desert", "famous_for": "Monasteries", "best_places": ["Pangong", "Nubra"], "food": ["Thukpa", "Momos"], "activities": ["Biking", "Camel"], "estimated_cost": {"total": "₹2500-5000", "stay": "₹1000-2500", "food": "₹500-800", "activity": "₹1000-2000"}, "best_time": "May-Sep", "climate": "Cold", "season": {"summer": "Pleasant", "winter": "Closed", "monsoon": "Dry"}, "market": ["Main Bazaar"] },
+    "ooty": { "nickname": "Hill Queen", "famous_for": "Gardens", "best_places": ["Botanical Garden", "Lake"], "food": ["Chocolate", "Varkey"], "activities": ["Toy Train", "Boating"], "estimated_cost": {"total": "₹1200-2200", "stay": "₹700-1200", "food": "₹300-600", "activity": "₹200-400"}, "best_time": "All Year", "climate": "Cool", "season": {"summer": "Pleasant", "winter": "Cold", "monsoon": "Rainy"}, "market": ["Commercial Rd"] },
+    "hampi": { "nickname": "Ruins City", "famous_for": "Boulders", "best_places": ["Virupaksha", "Vithala"], "food": ["Mango Tree"], "activities": ["Coracle", "Bouldering"], "estimated_cost": {"total": "₹1000-2000", "stay": "₹500-1000", "food": "₹300-600", "activity": "₹200-400"}, "best_time": "Oct-Mar", "climate": "Dry", "season": {"summer": "Hot", "winter": "Pleasant", "monsoon": "Slippery"}, "market": ["Hampi Bazaar"] },
+    "gokarna": { "nickname": "Chill Beach", "famous_for": "Beaches", "best_places": ["Om Beach", "Kudle"], "food": ["Seafood"], "activities": ["Trek", "Yoga"], "estimated_cost": {"total": "₹1000-2000", "stay": "₹500-1000", "food": "₹300-700", "activity": "₹100-300"}, "best_time": "Oct-Mar", "climate": "Coastal", "season": {"summer": "Humid", "winter": "Pleasant", "monsoon": "Rainy"}, "market": ["Car Street"] },
+    "swaraj dweep": { "nickname": "Havelock", "famous_for": "Scuba", "best_places": ["Radhanagar"], "food": ["Seafood"], "activities": ["Scuba", "Beach"], "estimated_cost": {"total": "₹2500-5000", "stay": "₹1500-3000", "food": "₹500-1000", "activity": "₹1000-2000"}, "best_time": "Oct-May", "climate": "Tropical", "season": {"summer": "Humid", "winter": "Pleasant", "monsoon": "Stormy"}, "market": ["Market 3"] },
+    "pondicherry": { "nickname": "French Town", "famous_for": "French Colony", "best_places": ["Promenade", "Auroville"], "food": ["Croissant", "Pizza"], "activities": ["Cycling", "Meditation"], "estimated_cost": {"total": "₹1500-3000", "stay": "₹800-1800", "food": "₹500-1000", "activity": "₹200-500"}, "best_time": "Oct-Mar", "climate": "Coastal", "season": {"summer": "Humid", "winter": "Pleasant", "monsoon": "Rainy"}, "market": ["Mission St"] },
+    "mahabaleshwar": { "nickname": "Berry Land", "famous_for": "Strawberries", "best_places": ["Arthur's Seat"], "food": ["Berry Cream"], "activities": ["Picking"], "estimated_cost": {"total": "₹1500-2800", "stay": "₹1000-1800", "food": "₹300-600", "activity": "₹200-400"}, "best_time": "Oct-Jun", "climate": "Pleasant", "season": {"summer": "Warm", "winter": "Cool", "monsoon": "Heavy Rain"}, "market": ["Main Market"] },
+    "jodhpur": { "nickname": "Blue City", "famous_for": "Fort", "best_places": ["Mehrangarh"], "food": ["Mirchi Bada"], "activities": ["Zip Line"], "estimated_cost": {"total": "₹1500-2500", "stay": "₹800-1500", "food": "₹300-600", "activity": "₹400-600"}, "best_time": "Oct-Mar", "climate": "Dry", "season": {"summer": "Hot", "winter": "Cool", "monsoon": "Light Rain"}, "market": ["Clock Tower"] },
+    "amritsar": { "nickname": "Golden City", "famous_for": "Golden Temple", "best_places": ["Golden Temple"], "food": ["Kulcha", "Lassi"], "activities": ["Border"], "estimated_cost": {"total": "₹1000-2000", "stay": "₹600-1200", "food": "₹300-600", "activity": "₹100-300"}, "best_time": "Oct-Mar", "climate": "Extreme", "season": {"summer": "Hot", "winter": "Cold", "monsoon": "Humid"}, "market": ["Hall Bazaar"] },
+    "darjeeling": { "nickname": "Tea Queen", "famous_for": "Tea", "best_places": ["Tiger Hill"], "food": ["Momos"], "activities": ["Toy Train"], "estimated_cost": {"total": "₹1200-2500", "stay": "₹700-1500", "food": "₹300-600", "activity": "₹200-500"}, "best_time": "Apr-Jun", "climate": "Cold", "season": {"summer": "Cool", "winter": "Cold", "monsoon": "Rainy"}, "market": ["Chowrasta"] },
+    "gandhinagar": { "nickname": "Green City", "famous_for": "Akshardham", "best_places": ["Akshardham"], "food": ["Dhokla"], "activities": ["Temple"], "estimated_cost": {"total": "₹800-1500", "stay": "₹500-900", "food": "₹200-400", "activity": "₹100-200"}, "best_time": "Nov-Feb", "climate": "Hot", "season": {"summer": "Hot", "winter": "Pleasant", "monsoon": "Moderate"}, "market": ["Sector 11"] },
+    "chandigarh": { "nickname": "City Beautiful", "famous_for": "Gardens", "best_places": ["Rock Garden"], "food": ["Butter Chicken"], "activities": ["Boating"], "estimated_cost": {"total": "₹1200-2200", "stay": "₹800-1400", "food": "₹300-600", "activity": "₹200-400"}, "best_time": "Oct-Mar", "climate": "Subtropical", "season": {"summer": "Hot", "winter": "Cold", "monsoon": "Moderate"}, "market": ["Sector 17"] },
+    "noida": { "nickname": "IT Hub", "famous_for": "Malls", "best_places": ["DLF Mall"], "food": ["Chaat"], "activities": ["Shopping"], "estimated_cost": {"total": "₹1500-2500", "stay": "₹800-1500", "food": "₹400-800", "activity": "₹300-600"}, "best_time": "Oct-Mar", "climate": "Extreme", "season": {"summer": "Hot", "winter": "Cold", "monsoon": "Moderate"}, "market": ["Atta Market"] },
+    "lucknow": { "nickname": "Nawab City", "famous_for": "Kebabs", "best_places": ["Bara Imambara"], "food": ["Galouti Kebab"], "activities": ["Food Walk"], "estimated_cost": {"total": "₹1000-1800", "stay": "₹600-1000", "food": "₹300-600", "activity": "₹100-300"}, "best_time": "Oct-Mar", "climate": "Subtropical", "season": {"summer": "Hot", "winter": "Cold", "monsoon": "Humid"}, "market": ["Aminabad"] },
+    "indore": { "nickname": "Food City", "famous_for": "Street Food", "best_places": ["Rajwada"], "food": ["Poha Jalebi"], "activities": ["Night Market"], "estimated_cost": {"total": "₹1000-1800", "stay": "₹600-1000", "food": "₹300-600", "activity": "₹100-300"}, "best_time": "Oct-Mar", "climate": "Subtropical", "season": {"summer": "Hot", "winter": "Pleasant", "monsoon": "Moderate"}, "market": ["Sarafa"] },
+    "patna": { "nickname": "Pataliputra", "famous_for": "History", "best_places": ["Golghar"], "food": ["Litti Chokha"], "activities": ["Museum"], "estimated_cost": {"total": "₹800-1500", "stay": "₹500-900", "food": "₹200-400", "activity": "₹100-300"}, "best_time": "Nov-Feb", "climate": "Hot", "season": {"summer": "Very Hot", "winter": "Cold", "monsoon": "Moderate"}, "market": ["Maurya Lok"] },
+    "ranchi": { "nickname": "Waterfall City", "famous_for": "Nature", "best_places": ["Dassam Falls"], "food": ["Dhungri"], "activities": ["Picnic"], "estimated_cost": {"total": "₹1000-1800", "stay": "₹600-1000", "food": "₹300-500", "activity": "₹200-400"}, "best_time": "Oct-Mar", "climate": "Pleasant", "season": {"summer": "Warm", "winter": "Cool", "monsoon": "Strong Rain"}, "market": ["Main Road"] },
+    "raipur": { "nickname": "Steel City", "famous_for": "Industry", "best_places": ["Nandanvan Zoo"], "food": ["Chila"], "activities": ["Zoo"], "estimated_cost": {"total": "₹800-1500", "stay": "₹500-900", "food": "₹200-400", "activity": "₹100-300"}, "best_time": "Nov-Feb", "climate": "Hot", "season": {"summer": "Hot", "winter": "Pleasant", "monsoon": "Moderate"}, "market": ["Pandri"] },
+    "bhopal": { "nickname": "Lake City", "famous_for": "Lakes", "best_places": ["Upper Lake"], "food": ["Poha"], "activities": ["Boating"], "estimated_cost": {"total": "₹1000-1800", "stay": "₹600-1000", "food": "₹300-500", "activity": "₹100-300"}, "best_time": "Oct-Feb", "climate": "Tropical", "season": {"summer": "Hot", "winter": "Pleasant", "monsoon": "Heavy Rain"}, "market": ["New Market"] },
+    "dehradun": { "nickname": "School Capital", "famous_for": "Hills", "best_places": ["Robber's Cave"], "food": ["Bun Tikki"], "activities": ["Trek"], "estimated_cost": {"total": "₹1200-2000", "stay": "₹700-1200", "food": "₹300-600", "activity": "₹200-400"}, "best_time": "Oct-Jun", "climate": "Pleasant", "season": {"summer": "Pleasant", "winter": "Cold", "monsoon": "Strong Rain"}, "market": ["Paltan Bazaar"] },
+    "bhubaneswar": { "nickname": "Temple City", "famous_for": "Temples", "best_places": ["Lingaraj"], "food": ["Chhena Poda"], "activities": ["Heritage"], "estimated_cost": {"total": "₹1000-1800", "stay": "₹600-1000", "food": "₹300-500", "activity": "₹100-300"}, "best_time": "Oct-Mar", "climate": "Hot", "season": {"summer": "Hot", "winter": "Pleasant", "monsoon": "Moderate"}, "market": ["Market Bldg"] },
+    "guwahati": { "nickname": "Gateway NE", "famous_for": "River", "best_places": ["Kamakhya"], "food": ["Thali"], "activities": ["Cruise"], "estimated_cost": {"total": "₹1000-2000", "stay": "₹600-1200", "food": "₹300-600", "activity": "₹200-400"}, "best_time": "Oct-Mar", "climate": "Humid", "season": {"summer": "Hot", "winter": "Pleasant", "monsoon": "Heavy Rain"}, "market": ["Fancy Bazaar"] },
+    "visakhapatnam": { "nickname": "Vizag", "famous_for": "Beach", "best_places": ["RK Beach"], "food": ["Seafood"], "activities": ["Submarine"], "estimated_cost": {"total": "₹1000-1800", "stay": "₹600-1000", "food": "₹300-600", "activity": "₹100-300"}, "best_time": "Oct-Mar", "climate": "Coastal", "season": {"summer": "Humid", "winter": "Pleasant", "monsoon": "Moderate"}, "market": ["Jagadamba"] },
+    "kochi": { "nickname": "Queen of Sea", "famous_for": "Backwaters", "best_places": ["Fort Kochi"], "food": ["Fish"], "activities": ["Ferry"], "estimated_cost": {"total": "₹1500-2500", "stay": "₹800-1500", "food": "₹400-700", "activity": "₹300-500"}, "best_time": "Oct-Mar", "climate": "Tropical", "season": {"summer": "Humid", "winter": "Pleasant", "monsoon": "Heavy Rain"}, "market": ["Jew Town"] },
+    "jammu": { "nickname": "Temple City", "famous_for": "Temples", "best_places": ["Raghunath"], "food": ["Rajma"], "activities": ["Pray"], "estimated_cost": {"total": "₹1200-2000", "stay": "₹700-1200", "food": "₹300-600", "activity": "₹200-400"}, "best_time": "Oct-Mar", "climate": "Subtropical", "season": {"summer": "Hot", "winter": "Cold", "monsoon": "Moderate"}, "market": ["Raghunath Bzr"] },
+    "nagpur": { "nickname": "Orange City", "famous_for": "Oranges", "best_places": ["Zero Mile"], "food": ["Saoji"], "activities": ["History"], "estimated_cost": {"total": "₹1000-1800", "stay": "₹600-1000", "food": "₹300-600", "activity": "₹100-300"}, "best_time": "Oct-Mar", "climate": "Hot", "season": {"summer": "Hot", "winter": "Pleasant", "monsoon": "Heavy Rain"}, "market": ["Sitabuldi"] },
+    "coimbatore": { "nickname": "Textile City", "famous_for": "Cotton", "best_places": ["Adiyogi"], "food": ["Idli"], "activities": ["Temple"], "estimated_cost": {"total": "₹1000-1800", "stay": "₹600-1000", "food": "₹300-600", "activity": "₹100-300"}, "best_time": "Sep-Mar", "climate": "Moderate", "season": {"summer": "Warm", "winter": "Pleasant", "monsoon": "Moderate"}, "market": ["Cross Cut"] },
+    "vijayawada": { "nickname": "Victory City", "famous_for": "Durga", "best_places": ["Kanaka Durga"], "food": ["Pulihora"], "activities": ["Temple"], "estimated_cost": {"total": "₹1000-1800", "stay": "₹600-1000", "food": "₹300-500", "activity": "₹100-300"}, "best_time": "Oct-Mar", "climate": "Hot", "season": {"summer": "Hot", "winter": "Pleasant", "monsoon": "Humid"}, "market": ["Besant Rd"] },
+    "thrissur": { "nickname": "Culture Capital", "famous_for": "Pooram", "best_places": ["Vadakkunnathan"], "food": ["Sadhya"], "activities": ["Culture"], "estimated_cost": {"total": "₹1000-2000", "stay": "₹600-1200", "food": "₹300-500", "activity": "₹200-400"}, "best_time": "Oct-Mar", "climate": "Tropical", "season": {"summer": "Humid", "winter": "Pleasant", "monsoon": "Heavy Rain"}, "market": ["High Road"] },
+    "imphal": { "nickname": "Jewel", "famous_for": "Lake", "best_places": ["Loktak"], "food": ["Eromba"], "activities": ["Nature"], "estimated_cost": {"total": "₹1200-2200", "stay": "₹700-1200", "food": "₹300-600", "activity": "₹200-400"}, "best_time": "Oct-Mar", "climate": "Pleasant", "season": {"summer": "Warm", "winter": "Cool", "monsoon": "Rainy"}, "market": ["Ima Keithel"] },
+    "agartala": { "nickname": "Tripura Capital", "famous_for": "Palace", "best_places": ["Ujjayanta"], "food": ["Mui Borok"], "activities": ["History"], "estimated_cost": {"total": "₹1000-1800", "stay": "₹600-1000", "food": "₹300-500", "activity": "₹100-300"}, "best_time": "Oct-Mar", "climate": "Humid", "season": {"summer": "Hot", "winter": "Pleasant", "monsoon": "Rainy"}, "market": ["Battala"] },
+    "gulmarg": { "nickname": "Ski Resort", "famous_for": "Skiing", "best_places": ["Gondola"], "food": ["Kahwa"], "activities": ["Skiing"], "estimated_cost": {"total": "₹2500-5000", "stay": "₹1500-3000", "food": "₹500-1000", "activity": "₹1000-2000"}, "best_time": "Dec-Feb", "climate": "Alpine", "season": {"summer": "Green", "winter": "Snow", "monsoon": "Light Rain"}, "market": ["Stalls"] },
+    "kodaikanal": { "nickname": "Princess Hills", "famous_for": "Lake", "best_places": ["Kodai Lake"], "food": ["Chocolate"], "activities": ["Cycle"], "estimated_cost": {"total": "₹1200-2200", "stay": "₹700-1200", "food": "₹300-600", "activity": "₹200-400"}, "best_time": "All Year", "climate": "Cool", "season": {"summer": "Pleasant", "winter": "Cold", "monsoon": "Rainy"}, "market": ["Anna Salai"] },
+    "mount abu": { "nickname": "Oasis", "famous_for": "Hill", "best_places": ["Nakki Lake"], "food": ["Dal Baati"], "activities": ["Boat"], "estimated_cost": {"total": "₹1200-2200", "stay": "₹800-1500", "food": "₹300-600", "activity": "₹100-300"}, "best_time": "Oct-Mar", "climate": "Cool", "season": {"summer": "Warm", "winter": "Cold", "monsoon": "Rainy"}, "market": ["Market"] },
+    "saputara": { "nickname": "Serpent", "famous_for": "Hill", "best_places": ["Lake"], "food": ["Thali"], "activities": ["Ropeway"], "estimated_cost": {"total": "₹1000-2000", "stay": "₹600-1200", "food": "₹300-500", "activity": "₹200-400"}, "best_time": "Oct-Feb", "climate": "Pleasant", "season": {"summer": "Mild", "winter": "Cool", "monsoon": "Misty"}, "market": ["Arts"] },
+    "auli": { "nickname": "Skiing", "famous_for": "Snow", "best_places": ["Slopes"], "food": ["Maggi"], "activities": ["Skiing"], "estimated_cost": {"total": "₹2500-4500", "stay": "₹1500-3000", "food": "₹500-800", "activity": "₹500-1500"}, "best_time": "Jan-Mar", "climate": "Alpine", "season": {"summer": "Cool", "winter": "Snow", "monsoon": "Rainy"}, "market": ["Joshimath"] },
+    "yercaud": { "nickname": "Jewel", "famous_for": "Coffee", "best_places": ["Lake"], "food": ["Capsicum"], "activities": ["Boat"], "estimated_cost": {"total": "₹1000-1800", "stay": "₹600-1000", "food": "₹300-500", "activity": "₹100-300"}, "best_time": "Oct-Jun", "climate": "Mild", "season": {"summer": "Warm", "winter": "Cool", "monsoon": "Rainy"}, "market": ["Main Bzr"] },
+    "panchgani": { "nickname": "Table Land", "famous_for": "Plateau", "best_places": ["Table Land"], "food": ["Strawberry"], "activities": ["Horse"], "estimated_cost": {"total": "₹1500-2500", "stay": "₹800-1500", "food": "₹400-700", "activity": "₹300-600"}, "best_time": "Sep-May", "climate": "Pleasant", "season": {"summer": "Warm", "winter": "Cool", "monsoon": "Rainy"}, "market": ["Shivaji"] },
+    "shaheed dweep": { "nickname": "Neil", "famous_for": "Relax", "best_places": ["Laxmanpur"], "food": ["Fish"], "activities": ["Snorkel"], "estimated_cost": {"total": "₹2000-4000", "stay": "₹1200-2500", "food": "₹400-800", "activity": "₹500-1000"}, "best_time": "Oct-May", "climate": "Tropical", "season": {"summer": "Humid", "winter": "Pleasant", "monsoon": "Rainy"}, "market": ["Kendra"] },
+    "baratang": { "nickname": "Cave Isle", "famous_for": "Caves", "best_places": ["Caves"], "food": ["Fish"], "activities": ["Boat"], "estimated_cost": {"total": "₹1500-2500", "stay": "₹800-1500", "food": "₹300-500", "activity": "₹500-1000"}, "best_time": "Oct-May", "climate": "Tropical", "season": {"summer": "Hot", "winter": "Pleasant", "monsoon": "Rainy"}, "market": ["Jetty"] },
+    "netaji subhas chandra bose island": { "nickname": "Ross", "famous_for": "Ruins", "best_places": ["Ruins"], "food": ["Snacks"], "activities": ["Walk"], "estimated_cost": {"total": "₹500-1000", "stay": "₹0", "food": "₹200-300", "activity": "₹300-500"}, "best_time": "Oct-May", "climate": "Tropical", "season": {"summer": "Hot", "winter": "Pleasant", "monsoon": "Rainy"}, "market": ["Shop"] },
+    "ross and smith islands": { "nickname": "Twin Isle", "famous_for": "Sandbar", "best_places": ["Sandbar"], "food": ["Packed"], "activities": ["Swim"], "estimated_cost": {"total": "₹2000-3000", "stay": "₹0", "food": "₹200", "activity": "₹1500-2500"}, "best_time": "Oct-Apr", "climate": "Tropical", "season": {"summer": "Hot", "winter": "Pleasant", "monsoon": "Closed"}, "market": ["Diglipur"] },
+    "barren island": { "nickname": "Volcano", "famous_for": "Active Volcano", "best_places": ["View"], "food": ["Boat"], "activities": ["Dive"], "estimated_cost": {"total": "₹10000-15000", "stay": "₹0", "food": "₹1000", "activity": "₹10000+"}, "best_time": "Nov-Feb", "climate": "Oceanic", "season": {"summer": "Rough", "winter": "Calm", "monsoon": "Closed"}, "market": ["None"] },
+    "majuli": { "nickname": "River Isle", "famous_for": "Culture", "best_places": ["Satra"], "food": ["Thali"], "activities": ["Masks"], "estimated_cost": {"total": "₹1200-2000", "stay": "₹600-1200", "food": "₹300-500", "activity": "₹200-400"}, "best_time": "Oct-Mar", "climate": "Riverine", "season": {"summer": "Humid", "winter": "Cool", "monsoon": "Flood"}, "market": ["Kamalabari"] },
+    "umananda": { "nickname": "Peacock", "famous_for": "Temple", "best_places": ["Temple"], "food": ["Snack"], "activities": ["Boat"], "estimated_cost": {"total": "₹200-500", "stay": "₹0", "food": "₹100", "activity": "₹100-300"}, "best_time": "All Year", "climate": "Humid", "season": {"summer": "Hot", "winter": "Pleasant", "monsoon": "Rainy"}, "market": ["None"] },
+    "st marys island": { "nickname": "Coconut", "famous_for": "Rocks", "best_places": ["Rocks"], "food": ["Coconut"], "activities": ["Photo"], "estimated_cost": {"total": "₹500-1000", "stay": "₹0", "food": "₹100", "activity": "₹400-800"}, "best_time": "Oct-May", "climate": "Coastal", "season": {"summer": "Hot", "winter": "Pleasant", "monsoon": "Closed"}, "market": ["Malpe"] },
+    "netrani": { "nickname": "Pigeon", "famous_for": "Dive", "best_places": ["Reef"], "food": ["Snack"], "activities": ["Scuba"], "estimated_cost": {"total": "₹3000-6000", "stay": "₹0", "food": "₹200", "activity": "₹3000-5000"}, "best_time": "Oct-May", "climate": "Coastal", "season": {"summer": "Humid", "winter": "Pleasant", "monsoon": "Closed"}, "market": ["Murudeshwar"] },
+    "munroe island": { "nickname": "Backwater", "famous_for": "Canal", "best_places": ["Canal"], "food": ["Fish"], "activities": ["Canoe"], "estimated_cost": {"total": "₹1000-2000", "stay": "₹600-1200", "food": "₹200-400", "activity": "₹300-600"}, "best_time": "Sep-Mar", "climate": "Tropical", "season": {"summer": "Humid", "winter": "Pleasant", "monsoon": "Rainy"}, "market": ["Village"] },
+    "pathiramanal": { "nickname": "Bird Isle", "famous_for": "Birds", "best_places": ["Trail"], "food": ["None"], "activities": ["Birding"], "estimated_cost": {"total": "₹500-1000", "stay": "₹0", "food": "₹0", "activity": "₹500-1000"}, "best_time": "Nov-Feb", "climate": "Tropical", "season": {"summer": "Hot", "winter": "Pleasant", "monsoon": "Rainy"}, "market": ["None"] },
+    "agatti": { "nickname": "Gateway", "famous_for": "Lagoon", "best_places": ["Lagoon"], "food": ["Tuna"], "activities": ["Snorkel"], "estimated_cost": {"total": "₹3000-5000", "stay": "₹2000-3500", "food": "₹500-800", "activity": "₹500-1000"}, "best_time": "Oct-Apr", "climate": "Tropical", "season": {"summer": "Hot", "winter": "Pleasant", "monsoon": "Rainy"}, "market": ["Mkt"] },
+    "minicoy": { "nickname": "Maliku", "famous_for": "Culture", "best_places": ["Lighthouse"], "food": ["Kavaab"], "activities": ["Culture"], "estimated_cost": {"total": "₹3000-5000", "stay": "₹2000-3000", "food": "₹500-800", "activity": "₹500-1000"}, "best_time": "Oct-Apr", "climate": "Tropical", "season": {"summer": "Hot", "winter": "Pleasant", "monsoon": "Rainy"}, "market": ["Souk"] },
+    "bangaram": { "nickname": "Resort", "famous_for": "Glow", "best_places": ["Beach"], "food": ["Buffet"], "activities": ["Relax"], "estimated_cost": {"total": "₹8000-15000", "stay": "₹6000-12000", "food": "₹1000-2000", "activity": "₹1000-2000"}, "best_time": "Oct-Apr", "climate": "Tropical", "season": {"summer": "Hot", "winter": "Pleasant", "monsoon": "Closed"}, "market": ["None"] },
+    "elephanta island": { "nickname": "Caves", "famous_for": "Caves", "best_places": ["Cave"], "food": ["Thali"], "activities": ["Ferry"], "estimated_cost": {"total": "₹500-1000", "stay": "₹0", "food": "₹200-400", "activity": "₹300-500"}, "best_time": "Nov-Mar", "climate": "Humid", "season": {"summer": "Hot", "winter": "Pleasant", "monsoon": "Closed"}, "market": ["Steps"] },
+    "chorao": { "nickname": "Bird Isle", "famous_for": "Birds", "best_places": ["Sanctuary"], "food": ["Bread"], "activities": ["Boat"], "estimated_cost": {"total": "₹800-1500", "stay": "₹0", "food": "₹200", "activity": "₹600-1000"}, "best_time": "Oct-Mar", "climate": "Tropical", "season": {"summer": "Hot", "winter": "Pleasant", "monsoon": "Green"}, "market": ["Bakery"] },
+    "diu island": { "nickname": "Mini Goa", "famous_for": "Fort", "best_places": ["Fort"], "food": ["Seafood"], "activities": ["Scooty"], "estimated_cost": {"total": "₹1500-2500", "stay": "₹800-1500", "food": "₹400-700", "activity": "₹300-500"}, "best_time": "Oct-Mar", "climate": "Coastal", "season": {"summer": "Hot", "winter": "Pleasant", "monsoon": "Rainy"}, "market": ["Main"] },
+    "pamban island": { "nickname": "Rameswaram", "famous_for": "Bridge", "best_places": ["Bridge"], "food": ["Thali"], "activities": ["Train"], "estimated_cost": {"total": "₹1000-2000", "stay": "₹500-1000", "food": "₹300-500", "activity": "₹200-500"}, "best_time": "Oct-Mar", "climate": "Tropical", "season": {"summer": "Hot", "winter": "Pleasant", "monsoon": "Rainy"}, "market": ["Town"] },
+    "sagar island": { "nickname": "Gangasagar", "famous_for": "Pilgrim", "best_places": ["Kapil Muni"], "food": ["Sweets"], "activities": ["Dip"], "estimated_cost": {"total": "₹1000-1500", "stay": "₹500-800", "food": "₹200-400", "activity": "₹300-500"}, "best_time": "Jan", "climate": "Humid", "season": {"summer": "Hot", "winter": "Pleasant", "monsoon": "Rainy"}, "market": ["Mela"] },
+    "kanchipuram": { "nickname": "Silk City", "famous_for": "Silk", "best_places": ["Temple"], "food": ["Idli"], "activities": ["Shop"], "estimated_cost": {"total": "₹1000-2000", "stay": "₹600-1200", "food": "₹300-500", "activity": "₹100-300"}, "best_time": "Oct-Mar", "climate": "Tropical", "season": {"summer": "Hot", "winter": "Pleasant", "monsoon": "Rainy"}, "market": ["Gandhi Rd"] },
+    "tirupati": { "nickname": "Balaji", "famous_for": "Temple", "best_places": ["Tirumala"], "food": ["Laddu"], "activities": ["Pray"], "estimated_cost": {"total": "₹1000-2000", "stay": "₹500-1200", "food": "₹200-500", "activity": "₹300-500"}, "best_time": "Sep-Feb", "climate": "Hot", "season": {"summer": "Scorching", "winter": "Pleasant", "monsoon": "Moderate"}, "market": ["Bazaar"] },
+    "haridwar": { "nickname": "Ganga Door", "famous_for": "Ganga", "best_places": ["Har Ki Pauri"], "food": ["Puri"], "activities": ["Dip"], "estimated_cost": {"total": "₹800-1500", "stay": "₹400-800", "food": "₹200-400", "activity": "₹100-300"}, "best_time": "Oct-Feb", "climate": "Subtropical", "season": {"summer": "Hot", "winter": "Cold", "monsoon": "Humid"}, "market": ["Moti"] },
+    "shirdi": { "nickname": "Sai Land", "famous_for": "Sai Baba", "best_places": ["Samadhi"], "food": ["Prasad"], "activities": ["Pray"], "estimated_cost": {"total": "₹800-1500", "stay": "₹400-900", "food": "₹200-400", "activity": "₹100-200"}, "best_time": "All Year", "climate": "Dry", "season": {"summer": "Hot", "winter": "Pleasant", "monsoon": "Moderate"}, "market": ["Lane"] },
+    "mathura": { "nickname": "Krishna Land", "famous_for": "Birthplace", "best_places": ["Janmabhoomi"], "food": ["Peda"], "activities": ["Aarti"], "estimated_cost": {"total": "₹800-1500", "stay": "₹400-900", "food": "₹200-400", "activity": "₹100-300"}, "best_time": "Oct-Mar", "climate": "Hot", "season": {"summer": "Very Hot", "winter": "Cool", "monsoon": "Humid"}, "market": ["Holi Gate"] },
+    "vrindavan": { "nickname": "Widow City", "famous_for": "Temples", "best_places": ["Banke Bihari"], "food": ["Lassi"], "activities": ["Parikrama"], "estimated_cost": {"total": "₹800-1500", "stay": "₹400-900", "food": "₹200-400", "activity": "₹100-300"}, "best_time": "Oct-Mar", "climate": "Hot", "season": {"summer": "Very Hot", "winter": "Cool", "monsoon": "Humid"}, "market": ["Loi"] },
+    "ayodhya": { "nickname": "Ram City", "famous_for": "Ram Mandir", "best_places": ["Mandir"], "food": ["Ladoo"], "activities": ["Darshan"], "estimated_cost": {"total": "₹1000-2000", "stay": "₹600-1200", "food": "₹200-500", "activity": "₹100-300"}, "best_time": "Oct-Mar", "climate": "Subtropical", "season": {"summer": "Hot", "winter": "Cool", "monsoon": "Humid"}, "market": ["Ram Path"] },
+    "kedarnath": { "nickname": "Shiva Abode", "famous_for": "Trek", "best_places": ["Temple"], "food": ["Maggi"], "activities": ["Trek"], "estimated_cost": {"total": "₹2000-4000", "stay": "₹1000-2500", "food": "₹400-800", "activity": "₹500-1500"}, "best_time": "May-Jun", "climate": "Alpine", "season": {"summer": "Cold", "winter": "Closed", "monsoon": "Risky"}, "market": ["Base"] },
+    "amarnath": { "nickname": "Ice Shiva", "famous_for": "Cave", "best_places": ["Cave"], "food": ["Langar"], "activities": ["Trek"], "estimated_cost": {"total": "₹5000-15000", "stay": "₹2000-5000", "food": "₹500-1000", "activity": "₹3000-10000"}, "best_time": "Jul-Aug", "climate": "Freezing", "season": {"summer": "Cold", "winter": "Closed", "monsoon": "Snow"}, "market": ["Baltal"] },
+    "somnath": { "nickname": "Jyotirlinga", "famous_for": "Temple", "best_places": ["Temple"], "food": ["Thali"], "activities": ["Light Show"], "estimated_cost": {"total": "₹1000-2000", "stay": "₹600-1200", "food": "₹300-500", "activity": "₹100-300"}, "best_time": "Oct-Mar", "climate": "Coastal", "season": {"summer": "Humid", "winter": "Pleasant", "monsoon": "Rainy"}, "market": ["Area"] },
+    "dwarka": { "nickname": "Krishna Kingdom", "famous_for": "Temple", "best_places": ["Dwarkadhish"], "food": ["Buttermilk"], "activities": ["Darshan"], "estimated_cost": {"total": "₹1200-2200", "stay": "₹700-1200", "food": "₹300-600", "activity": "₹200-400"}, "best_time": "Oct-Mar", "climate": "Coastal", "season": {"summer": "Hot", "winter": "Pleasant", "monsoon": "Humid"}, "market": ["Market"] },
+    "kanyakumari": { "nickname": "Tip", "famous_for": "Sunrise", "best_places": ["Rock"], "food": ["Fish"], "activities": ["Ferry"], "estimated_cost": {"total": "₹1000-2000", "stay": "₹600-1200", "food": "₹300-600", "activity": "₹200-400"}, "best_time": "Oct-Mar", "climate": "Coastal", "season": {"summer": "Humid", "winter": "Pleasant", "monsoon": "Rainy"}, "market": ["Beach"] },
+    "ujjain": { "nickname": "Mahakal", "famous_for": "Jyotirlinga", "best_places": ["Mahakal"], "food": ["Poha"], "activities": ["Aarti"], "estimated_cost": {"total": "₹1000-1800", "stay": "₹600-1000", "food": "₹200-500", "activity": "₹100-300"}, "best_time": "Oct-Mar", "climate": "Subtropical", "season": {"summer": "Hot", "winter": "Cool", "monsoon": "Rainy"}, "market": ["Freeganj"] },
+    "nashik": { "nickname": "Wine City", "famous_for": "Wine", "best_places": ["Sula"], "food": ["Misal"], "activities": ["Tasting"], "estimated_cost": {"total": "₹1500-2500", "stay": "₹800-1500", "food": "₹400-700", "activity": "₹300-600"}, "best_time": "Oct-Mar", "climate": "Pleasant", "season": {"summer": "Hot", "winter": "Cool", "monsoon": "Green"}, "market": ["Main Rd"] },
+    "deoghar": { "nickname": "Baidyanath", "famous_for": "Jyotirlinga", "best_places": ["Temple"], "food": ["Peda"], "activities": ["Darshan"], "estimated_cost": {"total": "₹800-1500", "stay": "₹400-800", "food": "₹200-400", "activity": "₹200-400"}, "best_time": "Oct-Mar", "climate": "Subtropical", "season": {"summer": "Hot", "winter": "Cool", "monsoon": "Rainy"}, "market": ["Tower"] },
+    "ambaji": { "nickname": "Shakti", "famous_for": "Temple", "best_places": ["Gabbar"], "food": ["Thali"], "activities": ["Ropeway"], "estimated_cost": {"total": "₹800-1500", "stay": "₹400-800", "food": "₹200-400", "activity": "₹100-300"}, "best_time": "Oct-Feb", "climate": "Semi-arid", "season": {"summer": "Hot", "winter": "Cool", "monsoon": "Rainy"}, "market": ["Market"] },
+    "srisailam": { "nickname": "Mallikarjuna", "famous_for": "Dam", "best_places": ["Dam"], "food": ["Pulihora"], "activities": ["Ropeway"], "estimated_cost": {"total": "₹1000-1800", "stay": "₹500-1000", "food": "₹300-500", "activity": "₹200-400"}, "best_time": "Oct-Feb", "climate": "Tropical", "season": {"summer": "Hot", "winter": "Pleasant", "monsoon": "Rainy"}, "market": ["Bazaar"] },
+    "omkareshwar": { "nickname": "Om Island", "famous_for": "Island", "best_places": ["Temple"], "food": ["Thali"], "activities": ["Parikrama"], "estimated_cost": {"total": "₹800-1500", "stay": "₹400-800", "food": "₹200-400", "activity": "₹100-300"}, "best_time": "Oct-Mar", "climate": "Moderate", "season": {"summer": "Hot", "winter": "Pleasant", "monsoon": "Rainy"}, "market": ["St"] },
+    "pushkar": { "nickname": "Rose City", "famous_for": "Brahma", "best_places": ["Lake"], "food": ["Malpua"], "activities": ["Camel"], "estimated_cost": {"total": "₹1000-2000", "stay": "₹500-1000", "food": "₹300-600", "activity": "₹200-500"}, "best_time": "Oct-Mar", "climate": "Desert", "season": {"summer": "Hot", "winter": "Cool", "monsoon": "Light Rain"}, "market": ["Bzr"] },
+    "bodh gaya": { "nickname": "Buddha Land", "famous_for": "Bodhi Tree", "best_places": ["Temple"], "food": ["Thukpa"], "activities": ["Meditate"], "estimated_cost": {"total": "₹800-1500", "stay": "₹400-800", "food": "₹200-400", "activity": "₹100-200"}, "best_time": "Oct-Mar", "climate": "Subtropical", "season": {"summer": "Hot", "winter": "Pleasant", "monsoon": "Rainy"}, "market": ["Refugee"] },
+    "rameswaram": { "nickname": "Island Temple", "famous_for": "Corridor", "best_places": ["Temple"], "food": ["South Indian"], "activities": ["Bath"], "estimated_cost": {"total": "₹1200-2200", "stay": "₹600-1200", "food": "₹300-600", "activity": "₹300-600"}, "best_time": "Oct-Mar", "climate": "Tropical", "season": {"summer": "Hot", "winter": "Pleasant", "monsoon": "Rainy"}, "market": ["West St"] },
+    "aizawl": {"nickname": "Highlander Home", "famous_for": "Hills", "estimated_cost": {"total": "₹1200-2000", "stay": "₹700-1200", "food": "₹300-600", "activity": "₹200-400"}, "best_places": ["Solomon Temple"], "food": ["Bamboo Shoot"], "activities": ["Trek"], "climate": "Mild", "market": ["Bara"]},
+    "kohima": {"nickname": "Angami Land", "famous_for": "Hornbill", "estimated_cost": {"total": "₹1500-2800", "stay": "₹800-1500", "food": "₹400-800", "activity": "₹300-500"}, "best_places": ["War Cemetery"], "food": ["Pork"], "activities": ["History"], "climate": "Cold", "market": ["Local"]},
+    "kavaratti": {"nickname": "Capital Isle", "famous_for": "Lagoon", "estimated_cost": {"total": "₹3000-5000", "stay": "₹2000-3000", "food": "₹500-800", "activity": "₹500-1000"}, "best_places": ["Mosque"], "food": ["Fish"], "activities": ["Glass Boat"], "climate": "Tropical", "market": ["Co-op"]}
+};
+
+// Function remains same, just uses local object
+function getTravelData() {
     const cityInput = document.getElementById('cityInput');
     const resultDiv = document.getElementById('result');
-    const loader = document.getElementById('loader');
     
-    const city = cityInput.value.trim();
+    const city = cityInput.value.trim().toLowerCase();
 
     if (!city) {
         alert("Please enter a city name!");
         return;
     }
 
-    // UI State: Loading
-    resultDiv.style.display = 'none';
-    loader.style.display = 'block';
+    const data = travelData[city];
 
-    try {
-        const response = await fetch(`https://hhh9cgm40h.execute-api.ap-south-1.amazonaws.com/stage1?city=${city}`);
-        const data = await response.json();
-
-        loader.style.display = 'none';
+    if (!data) {
         resultDiv.style.display = 'block';
+        resultDiv.innerHTML = `
+            <div style="text-align: center; padding: 20px;">
+                <h3 style="color: #ff6b6b;">😕 Oops!</h3>
+                <p>City not found. Try: Delhi, Mumbai, Goa, Manali...</p>
+            </div>`;
+        return;
+    }
 
-        if (data.error) {
-            resultDiv.innerHTML = `
-                <div style="text-align: center; padding: 20px;">
-                    <h3 style="color: #ff6b6b;">😕 Oops!</h3>
-                    <p>${data.error}</p>
-                    <small style="color:#ccc">Try: Manali, Goa, Jaipur, or Ooty</small>
-                </div>`;
-            return;
-        }
-
-        // Handle Cost: Check if it's an object (new format) or string (old format fallback)
-        let costHtml = '';
-        if (typeof data.estimated_cost === 'object') {
-            costHtml = `
-                <div class="cost-grid">
-                    <div class="cost-item"><span class="cost-label">🏠 Stay</span><span class="cost-val">${data.estimated_cost.stay}</span></div>
-                    <div class="cost-item"><span class="cost-label">🍕 Food</span><span class="cost-val">${data.estimated_cost.food}</span></div>
-                    <div class="cost-item"><span class="cost-label">🚗 Activity</span><span class="cost-val">${data.estimated_cost.activity}</span></div>
-                    <div class="cost-item"><span class="cost-label">💰 Total/Day</span><span class="cost-val">${data.estimated_cost.total}</span></div>
-                </div>
-            `;
-        } else {
-            costHtml = `<span class="cost-val">${data.estimated_cost}</span>`;
-        }
-
-        // Helper to create tags
-        const createTags = (arr) => arr.map(item => `<span>${item}</span>`).join('');
-
-        const html = `
-            <div class="header-section">
-                <h2>${data.city}</h2>
-                <h3>"${data.nickname}"</h3>
-            </div>
-
-            <div class="grid-container">
-                <div class="card">
-                    <div class="card-title">🌟 Famous For</div>
-                    <div class="card-content">${data.famous_for}</div>
-                </div>
-
-                <div class="card" style="border-left-color: #4ade80;">
-                    <div class="card-title">💸 Estimated Cost (Per Person)</div>
-                    <div class="card-content">${costHtml}</div>
-                </div>
-
-                <div class="card" style="border-left-color: #facc15;">
-                    <div class="card-title">📍 Best Places</div>
-                    <div class="card-content tags">${createTags(data.best_places)}</div>
-                </div>
-
-                <div class="card" style="border-left-color: #60a5fa;">
-                    <div class="card-title">🎢 Activities</div>
-                    <div class="card-content tags">${createTags(data.activities)}</div>
-                </div>
-
-                <div class="card" style="border-left-color: #f472b6;">
-                    <div class="card-title">🍲 Famous Food</div>
-                    <div class="card-content tags">${createTags(data.food)}</div>
-                </div>
-
-                <div class="card" style="border-left-color: #a78bfa;">
-                    <div class="card-title">🛍️ Shopping Markets</div>
-                    <div class="card-content tags">${createTags(data.market)}</div>
-                </div>
-
-                <div class="card" style="border-left-color: #fff;">
-                    <div class="card-title">🌤️ Weather & Timing</div>
-                    <div class="card-content">
-                        <strong>Best Time:</strong> ${data.best_time}<br>
-                        <strong>Climate:</strong> ${data.climate}<br>
-                        <hr style="margin: 8px 0; border: 0; border-top: 1px solid rgba(255,255,255,0.2);">
-                        <small>☀️ Summer: ${data.season.summer}</small><br>
-                        <small>❄️ Winter: ${data.season.winter}</small><br>
-                        <small>🌧️ Monsoon: ${data.season.monsoon}</small>
-                    </div>
-                </div>
+    resultDiv.style.display = 'block';
+    
+    // Create Tags Helper
+    const createTags = (arr) => arr ? arr.map(item => `<span>${item}</span>`).join('') : '';
+    
+    // Format Cost
+    let costHtml = '';
+    if (typeof data.estimated_cost === 'object') {
+        costHtml = `
+            <div class="cost-grid">
+                <div class="cost-item"><span class="cost-label">🏠 Stay</span><span class="cost-val">${data.estimated_cost.stay}</span></div>
+                <div class="cost-item"><span class="cost-label">🍕 Food</span><span class="cost-val">${data.estimated_cost.food}</span></div>
+                <div class="cost-item"><span class="cost-label">🚗 Activity</span><span class="cost-val">${data.estimated_cost.activity}</span></div>
+                <div class="cost-item"><span class="cost-label">💰 Total</span><span class="cost-val">${data.estimated_cost.total}</span></div>
             </div>
         `;
-
-        resultDiv.innerHTML = html;
-
-    } catch (err) {
-        loader.style.display = 'none';
-        resultDiv.style.display = 'block';
-        resultDiv.innerHTML = `<div style="text-align:center; color: #ff6b6b;"><strong>Error:</strong> Unable to fetch data. Check your internet connection.</div>`;
-        console.error(err);
+    } else {
+        costHtml = `<span class="cost-val">${data.estimated_cost}</span>`;
     }
+
+    const html = `
+        <div class="header-section">
+            <h2>${city.charAt(0).toUpperCase() + city.slice(1)}</h2>
+            <h3>"${data.nickname}"</h3>
+        </div>
+
+        <div class="grid-container">
+            <div class="card">
+                <div class="card-title">🌟 Famous For</div>
+                <div class="card-content">${data.famous_for}</div>
+            </div>
+
+            <div class="card" style="border-left-color: #4ade80;">
+                <div class="card-title">💸 Estimated Cost (Per Person)</div>
+                <div class="card-content">${costHtml}</div>
+            </div>
+
+            <div class="card" style="border-left-color: #facc15;">
+                <div class="card-title">📍 Best Places</div>
+                <div class="card-content tags">${createTags(data.best_places)}</div>
+            </div>
+
+            <div class="card" style="border-left-color: #60a5fa;">
+                <div class="card-title">🎢 Activities</div>
+                <div class="card-content tags">${createTags(data.activities)}</div>
+            </div>
+
+            <div class="card" style="border-left-color: #f472b6;">
+                <div class="card-title">🍲 Famous Food</div>
+                <div class="card-content tags">${createTags(data.food)}</div>
+            </div>
+
+            <div class="card" style="border-left-color: #a78bfa;">
+                <div class="card-title">🛍️ Shopping Markets</div>
+                <div class="card-content tags">${createTags(data.market)}</div>
+            </div>
+
+            <div class="card" style="border-left-color: #fff;">
+                <div class="card-title">🌤️ Weather & Timing</div>
+                <div class="card-content">
+                    <strong>Best Time:</strong> ${data.best_time}<br>
+                    <strong>Climate:</strong> ${data.climate}<br>
+                    <hr style="margin: 8px 0; border: 0; border-top: 1px solid rgba(255,255,255,0.2);">
+                    <small>☀️ Summer: ${data.season ? data.season.summer : 'N/A'}</small><br>
+                    <small>❄️ Winter: ${data.season ? data.season.winter : 'N/A'}</small><br>
+                    <small>🌧️ Monsoon: ${data.season ? data.season.monsoon : 'N/A'}</small>
+                </div>
+            </div>
+        </div>
+    `;
+
+    resultDiv.innerHTML = html;
 }
 
-// Trigger search on Enter key
 document.getElementById("cityInput").addEventListener("keyup", function(event) {
     if (event.key === "Enter") {
         getTravelData();
